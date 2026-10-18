@@ -50,6 +50,26 @@ body { background: #07151e; }
   45% { filter: drop-shadow(0 0 44px rgba(75,215,243,.38)); }
 }
 
+.embers { position: absolute; inset: 0; z-index: 3; pointer-events: none; animation: ember-reveal 1.3s ease-out 1.4s both; }
+.ember { position: absolute; border-radius: 50%; background: #ffd8a3; box-shadow: 0 0 5px rgba(255,167,76,.7),0 0 12px rgba(255,121,30,.25); opacity: 0; animation: ember-rise var(--ember-duration) linear var(--ember-delay) infinite; }
+
+@keyframes ember-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ember-rise {
+  0% { opacity: 0; transform: translate3d(0,12px,0) scale(.45); }
+  20% { opacity: .55; transform: translate3d(calc(var(--ember-drift) * .2),-12vh,0) scale(.9); }
+  50% { opacity: .65; transform: translate3d(calc(var(--ember-drift) * -.15),-30vh,0) scale(1); }
+  80% { opacity: .3; transform: translate3d(calc(var(--ember-drift) * .7),-48vh,0) scale(.7); }
+  100% { opacity: 0; transform: translate3d(var(--ember-drift),-60vh,0) scale(.2); }
+}
+
+@media (max-width:600px) {
+  .ember:nth-child(n+10) { display: none; }
+}
+
 @media (max-width:767px), (hover:none), (pointer:coarse) {
   .tower { transform: none; transition: none; }
 }
@@ -57,4 +77,6 @@ body { background: #07151e; }
 @media (prefers-reduced-motion: reduce) {
   .camera-frame, .scene, .wordmark, .tower-wrap, .atmosphere::after { animation: none; }
   .tower { transform: none; transition: none; }
+  .embers { display: none; animation: none; }
+  .ember { animation: none; }
 }

@@ -1,6 +1,17 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
+
+// Fixed values keep the server and browser render identical.
+const embers = [
+  [24, -3, 1.6, 17, -5, 24], [38, 2, 2, 15, -11, -18],
+  [57, -5, 1.4, 19, -3, 30], [72, 5, 1.8, 16, -13, -25],
+  [32, 8, 1.3, 18, -8, 20], [63, 1, 2.1, 14, -6, -15],
+  [46, -7, 1.5, 17, -14, 28], [81, 3, 1.4, 20, -9, -30],
+  [18, 6, 1.8, 16, -2, 22], [53, 9, 1.2, 19, -16, -20],
+  [68, -2, 1.6, 18, -10, 18], [42, 4, 1.9, 15, -4, -24],
+  [29, -6, 1.2, 20, -15, 32], [76, 10, 1.5, 17, -7, -18],
+] as const;
 
 export default function Bilad() {
   const towerRef = useRef<HTMLImageElement>(null);
@@ -63,6 +74,14 @@ export default function Bilad() {
           </h1>
           <div className="tower-wrap">
             <img ref={towerRef} className="tower" src="/assets/malwiya.png" alt="Malwiya Minaret of Samarra" fetchPriority="high" draggable="false" />
+          </div>
+          <div className="embers" aria-hidden="true">
+            {embers.map(([left, bottom, size, duration, delay, drift], index) => (
+              <span key={index} className="ember" style={{
+                left: `${left}%`, bottom: `${bottom}%`, width: `${size}px`, height: `${size}px`,
+                '--ember-duration': `${duration}s`, '--ember-delay': `${delay}s`, '--ember-drift': `${drift}px`,
+              } as CSSProperties} />
+            ))}
           </div>
         </div>
       </div>
