@@ -25,7 +25,8 @@ body { background: #07151e; }
 .tower { position: relative; }
 .tower-canvas { position: absolute; bottom: 0; left: 50%; height: 100%; aspect-ratio: 2 / 3; transform: translateX(-50%); }
 .tower-floor { position: absolute; inset: 0; will-change: transform; }
-.floor-image { display: block; width: 100%; height: 100%; mask-image: linear-gradient(to bottom,black 65%,transparent 98%); }
+.tower-clip-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.floor-image { display: block; width: 100%; height: 100%; clip-path: url(#tower-outline); mask-image: linear-gradient(to bottom,black 65%,transparent 98%); }
 
 @keyframes wordmark-entrance {
   from { opacity: 0; }

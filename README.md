@@ -6,7 +6,7 @@ Run `npm install` and `npm run dev` to preview. `npm run build` exports the prod
 
 ## Scroll prototype
 
-The scene stays pinned across eight viewport heights. Seven CSS-clipped copies of the same source photograph align on one 2:3 canvas. Each viewport of scrolling lifts the next tier, starting with the crown; reversing scroll reassembles the tower. The cut polygons follow the source photograph’s spiral seams and can be adjusted in `src/components/Bilad.tsx`. No separate floor image files are needed.
+The scene stays pinned across eight viewport heights. Seven CSS-clipped copies of the same source photograph align on one 2:3 canvas. Each viewport of scrolling lifts the next tier, starting with the crown; reversing scroll reassembles the tower. The shared cubic cut paths follow the middle of the staircase bands and can be adjusted in `src/components/tower-clips.ts`. Adjacent tiers reuse the same curve, with a subpixel overlap for clean reassembly. No separate floor image files are needed.
 
 The exposed surfaces are flat image cuts, not reconstructed interiors or 3D geometry. Reduced-motion users see the intact, static tower without the long scroll track. Desktop cursor parallax, the opening fade, shared camera movement, slow light shift and decorative embers remain supported.
 
