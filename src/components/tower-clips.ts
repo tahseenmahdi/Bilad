@@ -4,31 +4,32 @@ type Seam = { readonly start: Point; readonly curves: readonly Curve[] };
 
 // Source-image pixels (1024 × 1536). These curves trace the middle of the
 // visible stair treads, between the dark inner edge and stepped outer parapet.
+// Each seam stops at its own tier's right wall; the continuation stays above
+// the wider tier below, so that tier's rim cannot hitch a ride as a thin tail.
 const seams: readonly Seam[] = [
   { start: [427, 284], curves: [
     { c1: [467, 265], c2: [549, 248], end: [584, 243] },
-    { c1: [597, 242], c2: [607, 244], end: [612, 248] },
+    { c1: [590, 242], c2: [597, 241], end: [600, 241] },
   ] },
   { start: [382, 444], curves: [
     { c1: [428, 423], c2: [537, 408], end: [607, 401] },
-    { c1: [626, 400], c2: [646, 402], end: [656, 408] },
+    { c1: [609, 401], c2: [611, 400], end: [612, 400] },
   ] },
   { start: [332, 682], curves: [
     { c1: [389, 649], c2: [546, 632], end: [652, 622] },
-    { c1: [673, 620], c2: [691, 625], end: [699, 632] },
+    { c1: [654, 622], c2: [656, 621], end: [657, 621] },
   ] },
   { start: [284, 920], curves: [
-    { c1: [357, 883], c2: [548, 866], end: [697, 846] },
-    { c1: [719, 845], c2: [740, 849], end: [748, 855] },
+    { c1: [357, 883], c2: [548, 866], end: [686, 845] },
+    { c1: [692, 844], c2: [698, 842], end: [701, 840] },
   ] },
   { start: [237, 1169], curves: [
-    { c1: [330, 1126], c2: [563, 1110], end: [747, 1088] },
-    { c1: [766, 1087], c2: [781, 1090], end: [788, 1096] },
+    { c1: [330, 1126], c2: [563, 1110], end: [736, 1084] },
+    { c1: [742, 1083], c2: [748, 1082], end: [751, 1081] },
   ] },
   // The plinth has a horizontal masonry joint rather than a spiral stair.
-  { start: [155, 1384], curves: [
-    { c1: [340, 1386], c2: [637, 1386], end: [801, 1384] },
-    { c1: [813, 1388], c2: [826, 1394], end: [839, 1401] },
+  { start: [185, 1372], curves: [
+    { c1: [340, 1374], c2: [637, 1374], end: [791, 1372] },
   ] },
 ];
 
