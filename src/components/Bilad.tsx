@@ -161,14 +161,14 @@ export default function Bilad() {
         </defs>
       </svg>
       <section className="opening" aria-label="Scroll to lift the Malwiya tower floors, top to bottom">
-      <div className="camera-frame">
-        <div className="scene">
-          <div className="atmosphere" aria-hidden="true" />
-          <div className="wordmark-focus">
+        <div className="wordmark-focus">
           <h1 className="wordmark" aria-label="Bilad" dir="ltr">
             <span>B</span><span>I</span><span className="inverted">L</span><span>A</span><span>D</span>
           </h1>
-          </div>
+        </div>
+      <div className="camera-frame">
+        <div className="scene">
+          <div className="atmosphere" aria-hidden="true" />
           <div className="tower-wrap">
             <div ref={towerRef} className="tower" role="img" aria-label="Malwiya Minaret of Samarra, separated into seven scroll-animated tiers">
               <div className="tower-focus" ref={focusRef}>
