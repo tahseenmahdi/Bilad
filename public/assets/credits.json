@@ -1,0 +1,31 @@
+[
+  {
+    "id": "babylon",
+    "file": "The_historical_city_of_Babylon.jpg",
+    "url": "https://commons.wikimedia.org/wiki/File:The_historical_city_of_Babylon.jpg",
+    "license": "Public domain"
+  },
+  {
+    "id": "ur",
+    "file": "Ziggarat_of_Ur_001.jpg",
+    "url": "https://commons.wikimedia.org/wiki/File:Ziggarat_of_Ur_001.jpg",
+    "author": "<a rel=\"mw:WikiLink/Interwiki\" href=\"https://en.wikipedia.org/wiki/User:Tla2006\" title=\"wikipedia:User:Tla2006\" class=\"extiw\">Tla2006</a> at <a rel=\"mw:WikiLink/Interwiki\" href=\"https://en.wikipedia.org/wiki/\" title=\"wikipedia:\" class=\"extiw\">English Wikipedia</a>",
+    "license": "Public domain"
+  },
+  {
+    "id": "hatra",
+    "file": "اثار_الحضر.jpg",
+    "url": "https://commons.wikimedia.org/wiki/File:%D8%A7%D8%AB%D8%A7%D8%B1_%D8%A7%D9%84%D8%AD%D8%B6%D8%B1.jpg",
+    "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Husseinal-mauktar&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Husseinal-mauktar (page does not exist)\">Husseinal-mauktar</a>",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  },
+  {
+    "id": "erbil",
+    "file": "Hawler_Castle.jpg",
+    "url": "https://commons.wikimedia.org/wiki/File:Hawler_Castle.jpg",
+    "author": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/8605011@N02\">jan kurdistani</a>",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+  }
+]
