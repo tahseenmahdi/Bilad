@@ -6,6 +6,8 @@
 html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
 body { background: #07151e; }
 .opening { position: relative; width: 100%; height: 100svh; overflow: hidden; isolation: isolate; background: #0a3047; }
+.camera-frame { position: absolute; inset: -12px; transform-origin: 50% 60%; animation: camera-arrive 3.2s cubic-bezier(.22,1,.36,1) both; }
+.scene { position: absolute; inset: 0; isolation: isolate; transform-origin: 50% 60%; animation: scene-drift 16s ease-in-out 3.2s infinite alternate both; }
 .atmosphere { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 85% at 10% 12%, rgba(6,91,152,.65), transparent 75%), radial-gradient(ellipse 75% 80% at 87% 23%, rgba(27,127,220,.35), transparent 75%), radial-gradient(ellipse 60% 70% at 52% 68%, rgba(13,184,211,.26), transparent 76%), linear-gradient(180deg,#0b3552 0%,#0a3d55 50%,#061b27 100%); }
 .wordmark { position: absolute; z-index: 1; top: 20%; left: 50%; transform: translateX(-50%); display: flex; gap: .35em; margin: 0; color: #e3f2fa; font-family: 'Space Grotesk',sans-serif; font-size: clamp(4rem,10.6vw,8.5rem); font-weight: 300; line-height: 1; filter: drop-shadow(0 0 35px rgba(13,184,211,.25)); mask-image: linear-gradient(black 30%,rgba(0,0,0,.45)); user-select: none; }
 .inverted { display: inline-block; transform: scaleY(-1); }
@@ -26,6 +28,16 @@ body { background: #07151e; }
   to { opacity: 1; transform: translate(-50%,0); }
 }
 
+@keyframes camera-arrive {
+  from { transform: translateY(8px) scale(1); }
+  to { transform: translateY(0) scale(1.025); }
+}
+
+@keyframes scene-drift {
+  from { transform: translate(0,0) scale(1); }
+  to { transform: translate(-5px,-3px) scale(1.012); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .wordmark, .tower-wrap { animation: none; }
+  .camera-frame, .scene, .wordmark, .tower-wrap { animation: none; }
 }
