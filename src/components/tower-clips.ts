@@ -69,3 +69,5 @@ export const towerOutline = 'M 445 103 C 454 87 550 87 572 103 L 579 123 C 593 1
 
 export const clipCoordinateScale = 'scale(0.0009765625 0.0006510416666666666)';
 export const staircaseSeamPaths = seams.map(seam => `M ${point(seam.start)} ${forward(seam)}`);
+// Center of each visible curved tread for camera framing.
+export const seamFocusY = seams.map(seam => (seam.start[1] + seam.curves[0].end[1]) / 2);

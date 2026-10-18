@@ -6,7 +6,7 @@
 html, body { margin: 0; width: 100%; min-height: 100%; }
 html { overflow-x: clip; }
 body { background: #07151e; }
-.scroll-journey { height: 800svh; }
+.scroll-journey { height: 700svh; }
 .opening { position: sticky; top: 0; width: 100%; height: 100svh; overflow: hidden; isolation: isolate; background: #0a3047; }
 .camera-frame { position: absolute; inset: -12px; transform-origin: 50% 60%; animation: camera-arrive 3.2s cubic-bezier(.22,1,.36,1) both; }
 .scene { position: absolute; inset: 0; isolation: isolate; transform-origin: 50% 60%; animation: scene-drift 16s ease-in-out 3.2s infinite alternate both; }
@@ -24,7 +24,12 @@ body { background: #07151e; }
 .tower-wrap { mask-image: none; }
 .tower { position: relative; }
 .tower-canvas { position: absolute; bottom: 0; left: 50%; height: 100%; aspect-ratio: 2 / 3; transform: translateX(-50%); }
-.tower-floor { position: absolute; inset: 0; will-change: transform; }
+.tower-focus { position: absolute; inset: 0; transform-origin: 50% 100%; will-change: transform; transition: transform 1100ms cubic-bezier(.22,1,.36,1); }
+.tower-floor { position: absolute; inset: 0; will-change: transform; transition: transform 1000ms cubic-bezier(.22,1,.36,1); }
+.floor-surface { width: 100%; height: 100%; }
+.floor-feather { transition: opacity 900ms ease; }
+.wordmark-focus { position: absolute; inset: 0; transition: opacity 900ms ease; }
+.scroll-journey[data-stage]:not([data-stage="0"]) .wordmark-focus { opacity: .18; }
 .tower-clip-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
 .floor-image { display: block; width: 100%; height: 100%; clip-path: url(#tower-outline); mask-image: linear-gradient(to bottom,black 65%,transparent 98%); }
 
@@ -83,6 +88,9 @@ body { background: #07151e; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .wordmark-focus { opacity: 1 !important; transition: none; }
+  .tower-focus, .tower-floor { transform: none !important; transition: none; }
+  .floor-feather { opacity: 0 !important; transition: none; }
   .scroll-journey { height: 100svh; }
   .camera-frame, .scene, .wordmark, .tower-wrap, .atmosphere::after { animation: none; }
   .tower { transform: none; transition: none; }
