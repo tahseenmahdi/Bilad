@@ -12,3 +12,20 @@ body { background: #07151e; }
 .tower-wrap { position: absolute; z-index: 2; bottom: -1%; left: 50%; transform: translateX(-50%); width: min(760px,100vw); height: 70%; mix-blend-mode: screen; mask-image: linear-gradient(to bottom,transparent 0%,black 5%,black 65%,transparent 98%),linear-gradient(to right,transparent 0%,black 18%,black 82%,transparent 100%); mask-composite: intersect; pointer-events: none; }
 .tower { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; filter: grayscale(1) brightness(.82) sepia(1) saturate(1.5) hue-rotate(145deg); opacity: .88; }
 @media (max-width:600px) { .wordmark { top: 22%; font-size: 14vw; gap: .25em; } .tower-wrap { height: 67%; width: 115vw; } }
+
+.wordmark { animation: wordmark-entrance .9s ease-out .1s both; }
+.tower-wrap { animation: tower-entrance 1.2s cubic-bezier(.22,1,.36,1) 1.05s both; }
+
+@keyframes wordmark-entrance {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes tower-entrance {
+  from { opacity: 0; transform: translate(-50%,10px); }
+  to { opacity: 1; transform: translate(-50%,0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark, .tower-wrap { animation: none; }
+}
