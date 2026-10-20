@@ -50,10 +50,26 @@ function reverse(seam: Seam, offset = 0) {
   }).join(' ');
 }
 
+// Continue each tread's curve across the exposed shoulder of the wider floor.
+// The same contour drives the cut and feather, avoiding horizontal fade shelves.
+const edgeSeams: readonly Seam[] = seams.map((seam, index) => {
+  if (index === seams.length - 1) return seam;
+  const [x, y] = seam.start;
+  const [endX, endY] = seam.curves[seam.curves.length - 1].end;
+  return {
+    start: [0, y + 100],
+    curves: [
+      { c1: [x * .45, y + 100], c2: [x - 48, y + 24], end: seam.start },
+      ...seam.curves,
+      { c1: [endX + 64, endY - 16], c2: [900, endY - 32], end: [1024, endY - 32] },
+    ],
+  };
+});
+
 // Adjacent floors share the same curve, with a subpixel overlap to avoid seams.
-export const floorClipPaths = Array.from({ length: seams.length + 1 }, (_, index) => {
-  const top = seams[index - 1];
-  const bottom = seams[index];
+export const floorClipPaths = Array.from({ length: edgeSeams.length + 1 }, (_, index) => {
+  const top = edgeSeams[index - 1];
+  const bottom = edgeSeams[index];
   let path = top
     ? `M 0 ${top.start[1] - .65} ${forward(top, -.65)} L 1024 ${top.curves[top.curves.length - 1].end[1] - .65}`
     : 'M 0 0 L 1024 0';
@@ -68,6 +84,6 @@ export const floorClipPaths = Array.from({ length: seams.length + 1 }, (_, index
 export const towerOutline = 'M 445 103 C 454 87 550 87 572 103 L 579 123 C 593 128 601 143 601 163 L 603 241 L 615 246 L 615 400 L 658 404 L 661 626 L 700 627 L 704 848 L 749 851 L 753 1083 L 790 1089 L 794 1371 L 807 1377 L 807 1394 L 882 1425 L 882 1499 L 142 1499 L 143 1416 L 154 1401 L 154 1375 L 180 1369 L 181 1233 C 182 1197 199 1180 235 1165 L 235 994 C 235 963 248 948 281 925 L 281 759 C 281 725 299 705 329 683 L 329 511 C 329 477 348 465 378 445 L 378 356 C 378 327 395 309 424 288 L 424 175 C 424 150 431 139 443 133 Z';
 
 export const clipCoordinateScale = 'scale(0.0009765625 0.0006510416666666666)';
-export const staircaseSeamPaths = seams.map(seam => `M ${point(seam.start)} ${forward(seam)}`);
+export const staircaseSeamPaths = edgeSeams.map(seam => `M ${point(seam.start)} ${forward(seam)}`);
 // Center of each visible curved tread for camera framing.
 export const seamFocusY = seams.map(seam => (seam.start[1] + seam.curves[0].end[1]) / 2);

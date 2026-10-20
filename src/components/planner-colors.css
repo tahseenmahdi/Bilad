@@ -1,0 +1,177 @@
+/* Bilad blues: distinguish tools through depth, cyan light and imagery. */
+.ai-page.map-is-open { background:radial-gradient(ellipse 75% 55% at 55% 38%,#0d789a32,transparent 72%),radial-gradient(ellipse at 90% 80%,#1b7fdc23,transparent 65%),linear-gradient(#07151e,#031018 75%,#020b12); color:#e2f3fc; }
+.map-is-open .ai-header { border-bottom:1px solid #75c9e414; }
+.map-is-open .ai-brand { color:#e2f3fc; }
+.map-is-open .back-to-tower { color:#95b9cc; }
+.map-is-open .back-to-tower:hover { color:#86d9ef; }
+.map-is-open .options-orb { background:#0c2b40; border-color:#315c736e; color:#e2f3fc; }
+.map-is-open .options-popover { background:#0c2b40; border-color:#315c736e; box-shadow:0 12px 30px #02111c33; }
+.map-is-open .options-popover button { color:#e2f3fc; }
+.map-is-open .options-popover button:hover { background:#16445f; }
+.map-is-open .options-popover .option-back { color:#95b9cc; border-top-color:#315c736e; }
+.map-is-open .option-spark { color:#86d9ef; }
+.map-is-open .ai-core { padding-top:28px; }
+.trip-planner { --ink:#e2f3fc; --muted:#95b9cc; --line:#315c736e; --sand:#86d9ef; }
+.trip-planner button:focus-visible,.trip-planner a:focus-visible,.trip-planner select:focus-visible,.trip-planner input:focus-visible,.map-is-open .ai-header a:focus-visible,.map-is-open .options-orb:focus-visible { outline:2px solid #86d9ef; outline-offset:4px; }
+.planner-intro { margin-bottom:26px; }
+.planner-intro>span { color:#95b9cc; font-size:13px; }
+.planner-workspace-simple .planner-map { border:1px solid #315c736e; border-radius:18px; box-shadow:0 8px 24px #02111c33; }
+.planner-cancel-pick { color:#e2f3fc; border-bottom-color:#315c736e; }
+.place-spotlight { border:1px solid #315c736e; border-radius:16px; background:#0c2b40; padding:23px; margin-top:18px; gap:22px; }
+.spotlight-art { width:115px; min-height:145px; border-radius:10px; }
+.spotlight-copy h3 { color:#e2f3fc; font-size:25px; }
+.spotlight-copy h3>span { color:#95b9cc; font-size:14px; }
+.spotlight-copy p { color:#95b9cc; font-size:14px; line-height:1.7; }
+.spotlight-copy .category-label { color:#86d9ef; font-size:11px; }
+.spotlight-copy .quiet-icon { color:#95b9cc; }
+.spotlight-actions { color:#95b9cc; font-size:12px; gap:16px; }
+.spotlight-actions a { color:#e2f3fc; }
+.spotlight-copy .planner-secondary { color:#e2f3fc; background:#16445f; border-color:#315c736e; font-size:12px!important; border-radius:8px; }
+.photo-credit,.photo-credit a { color:#95b9cc; font-size:10px; }
+
+.planner-reveal-deck { --tool-bg:#0b2c43; --tool-surface:#0c2b40; --tool-accent:#e2f3fc; --tool-border:#315c736e; --tool-soft:#16445f; --tool-text:#e2f3fc; --tool-muted:#95b9cc; max-width:1120px; margin-top:24px; }
+.planner-reveal-deck[data-active="setup"],.planner-doorway[data-tool="setup"],.planner-tools-menu button[data-tool="setup"] { --tool-bg:#0b263e; --tool-surface:#12374e; --tool-accent:#84ccf1; --tool-border:#477e9d60; --tool-soft:#173f59; --tool-glow:#2b9bd226; }
+.planner-reveal-deck[data-active="nearby"],.planner-doorway[data-tool="nearby"],.planner-tools-menu button[data-tool="nearby"] { --tool-bg:#0b3548; --tool-surface:#134c60; --tool-accent:#8ce4f2; --tool-border:#55c4df65; --tool-soft:#1a5669; --tool-glow:#40d1ec26; }
+.planner-reveal-deck[data-active="browse"],.planner-doorway[data-tool="browse"],.planner-tools-menu button[data-tool="browse"] { --tool-bg:#102d4b; --tool-surface:#173f62; --tool-accent:#95ceff; --tool-border:#629bd265; --tool-soft:#214f73; --tool-glow:#3c9ef02b; }
+.planner-reveal-deck[data-active="trip"],.planner-doorway[data-tool="trip"],.planner-tools-menu button[data-tool="trip"] { --tool-bg:#0c3b50; --tool-surface:#17566b; --tool-accent:#a0edfa; --tool-border:#69cddf70; --tool-soft:#215e72; --tool-glow:#58dcf02b; }
+.planner-reveal-deck[data-active="milai"],.planner-doorway[data-tool="milai"],.planner-tools-menu button[data-tool="milai"] { --tool-bg:#082c45; --tool-surface:#11425f; --tool-accent:#7ad8ff; --tool-border:#489ecb70; --tool-soft:#194e6e; --tool-glow:#2dbff236; }
+.trip-planner .planner-doorway { color:var(--tool-accent); background:linear-gradient(120deg,var(--tool-soft),var(--tool-bg) 70%); border-color:var(--tool-border); box-shadow:inset 0 1px 0 #a8e7ff24,0 0 28px var(--tool-glow); min-height:58px; font-size:13px; max-width:188px; }
+.planner-doorway>svg,.planner-doorway>small { color:var(--tool-accent); }
+.trip-planner .planner-doorway:hover { background:var(--tool-surface); border-color:var(--tool-accent); }
+.planner-doorway-sheen { background:linear-gradient(110deg,transparent 25%,#93e9ff35 48%,transparent 65%); }
+.planner-reveal-deck.has-open-tool { background:radial-gradient(ellipse at 50% 0,var(--tool-soft),transparent 70%),var(--tool-bg); border:1px solid var(--tool-border); border-radius:25px; box-shadow:inset 0 1px #b7eaff20,0 0 50px var(--tool-glow); }
+.planner-open-bar { padding:15px 24px; min-height:76px; margin:0; }
+.trip-planner .planner-open-title { color:var(--tool-accent); font-size:17px; gap:12px; font-weight:500; }
+.planner-open-title>svg,.planner-collapse-mark { color:var(--tool-accent); }
+.planner-more-orb { color:var(--tool-accent); background:var(--tool-surface); border-color:var(--tool-border); box-shadow:none; }
+.planner-more-orb:hover,.planner-more-orb[aria-expanded="true"] { border-color:var(--tool-accent); }
+.planner-tools-menu { background:#0c2b40; border-color:#315c736e; box-shadow:0 12px 30px #02111c33; padding:8px; }
+.planner-tools-menu button[data-tool] { color:var(--tool-accent); background:var(--tool-bg); margin-bottom:5px; border-radius:10px; min-height:45px; font-size:13px; }
+.planner-tools-menu button[data-tool]>svg { color:var(--tool-accent); }
+.planner-tools-menu button:hover { filter:brightness(.98); }
+.planner-tools-menu .planner-back-tools { color:#95b9cc; border-top-color:#315c736e; font-size:11px; }
+.planner-reveal-region { border-top:1px solid var(--tool-border); }
+.planner-reveal-content { padding:26px; }
+.planner-reveal-content>.planner-message { padding:13px 15px; border-radius:9px; background:var(--tool-soft); color:var(--tool-accent); font-size:12px; line-height:1.6; }
+.planner-reveal-content a { color:var(--tool-accent); }
+
+.planner-reveal-content .planner-toolbar { align-items:end; gap:20px; padding:0; margin:0; }
+.planner-reveal-content .planner-field>span { color:var(--tool-muted); font-size:12px; margin-bottom:9px; }
+.planner-reveal-content .planner-field select,.nearby-start-field select { width:100%; border:1px solid var(--tool-border); border-radius:9px; background:#0c2b40; color:#e2f3fc; font-size:15px; min-height:46px; padding:10px 13px; }
+.planner-reveal-content select option { background:#0c2b40; color:#e2f3fc; }
+.planner-reveal-content .time-field { border:0; padding-left:0; max-width:190px; }
+.planner-reveal-content .pin-start-button { min-height:46px; padding:10px 13px; border:1px dashed var(--tool-border); color:var(--tool-accent); border-radius:9px; background:var(--tool-surface); font-size:12px!important; }
+.planner-reveal-content .planner-primary { background:var(--tool-accent); color:#fff; border-color:var(--tool-accent); border-radius:9px; min-height:46px; font-size:13px; padding:13px 18px; }
+.planner-reveal-content .planner-primary:hover { filter:brightness(1.08); }
+
+.nearby-reference-bar { display:flex; align-items:center; justify-content:space-between; gap:20px; margin:0 0 26px; padding-bottom:23px; border-bottom:1px solid var(--tool-border); }
+.nearby-reference-tabs { display:inline-flex; padding:5px; gap:5px; border-radius:12px; background:var(--tool-soft); }
+.nearby-reference-tabs button { border:0; background:transparent; color:#95b9cc; font-size:13px; padding:11px 15px; border-radius:8px; min-height:42px; }
+.nearby-reference-tabs button[aria-pressed="true"] { color:#fff; background:var(--tool-accent); box-shadow:0 2px 5px #02111c33; }
+.nearby-reference-tabs button:disabled { color:#95b9cc; opacity:.65; }
+.nearby-start-field { display:flex; align-items:center; gap:12px; color:#95b9cc; font-size:12px; }
+.nearby-start-field>span { white-space:nowrap; }.nearby-start-field select { min-width:165px; font-size:13px; }
+.nearby-heading { align-items:center; gap:24px; }
+.nearby-heading h3 { color:#e2f3fc; font-size:28px; line-height:1.2; }
+.nearby-context { color:var(--tool-muted); font-size:13px; line-height:1.65; margin:9px 0 0; max-width:580px; }
+.planner-reveal-content .place-search input { width:170px; min-height:43px; padding:10px 13px; border:1px solid var(--tool-border); border-radius:9px; background:#0c2b40; color:#e2f3fc; font-size:13px; }
+.planner-reveal-content .place-search input::placeholder { color:#95b9cc; }
+.planner-reveal-content .category-filters { margin:21px 0; gap:14px; }
+.planner-reveal-content .category-filters select { border:1px solid var(--tool-border); border-radius:8px; background:var(--tool-surface); color:var(--tool-accent); font-size:12px; min-height:36px; padding:7px 11px; }
+.planner-reveal-content .category-filters>span { color:#95b9cc; font-size:11px; }
+.planner-reveal-content .place-cards { gap:20px; }
+.planner-reveal-content .place-card { display:flex; flex-direction:column; background:#0c2b40; border:1px solid var(--tool-border); border-radius:14px; padding:10px; overflow:hidden; }
+.planner-reveal-content .place-card.in-plan { border-color:var(--tool-accent); }
+.planner-reveal-content .place-card-main { flex:1; }
+.planner-reveal-content .place-card-art { height:135px; border-radius:8px; }
+.place-art { background:#123a54; color:#8dd5ef; }.art-nature { background:#104557; color:#8be0ed; }.art-culture { background:#143b5b; color:#99d7ff; }
+.planner-reveal-content .place-card-copy { padding:16px 8px 0; }
+.planner-reveal-content .place-card-copy>span { color:#95b9cc; font-size:11px; }
+.planner-reveal-content .place-card-copy h4 { color:#e2f3fc; font-size:18px; font-weight:500; margin:8px 0 9px; line-height:1.3; }
+.planner-reveal-content .place-card-copy p { color:#95b9cc; font-size:12px; line-height:1.7; -webkit-line-clamp:3; }
+.planner-reveal-content .place-card-bottom { padding:15px 8px 5px; gap:10px; }
+.planner-reveal-content .place-card-bottom>span { color:#95b9cc; font-size:11px; }
+.planner-reveal-content .place-card-bottom button { background:var(--tool-soft); color:var(--tool-accent); border:0; border-radius:7px; padding:9px 12px; font-size:12px; min-height:34px; }
+.planner-reveal-content .place-card.in-plan .place-card-bottom button { color:var(--tool-accent); background:var(--tool-bg); }
+.planner-reveal-content .empty-copy { color:var(--tool-muted); font-size:13px; padding:14px 0; }
+
+.planner-reveal-content>.itinerary-panel { max-width:760px; }
+.planner-reveal-content .trip-settings { padding:0 0 20px; border-bottom:1px solid var(--tool-border); color:#95b9cc; font-size:12px; }
+.planner-reveal-content .trip-settings input { accent-color:var(--tool-accent); width:15px; height:15px; }
+.planner-reveal-content .trip-summary { background:#0c2b40; border:1px solid var(--tool-border); border-radius:14px; padding:20px; margin-top:22px; }
+.planner-reveal-content .trip-summary strong { color:#e2f3fc; font-size:34px; }
+.planner-reveal-content .trip-summary>div:first-child>span { color:#95b9cc; font-size:12px; }
+.planner-reveal-content .route-status { color:#86d9ef; font-size:11px; margin-top:7px; }
+.planner-reveal-content .route-status.is-road { color:#86d9ef; }
+.planner-reveal-content .trip-summary>p { color:#95b9cc; font-size:12px; margin-top:11px; line-height:1.8; }
+.planner-reveal-content .time-track { background:#16445f; height:4px; }.planner-reveal-content .time-track i { background:#48bedc; }
+.planner-reveal-content .time-track.over-budget i { background:#b5eeff; }.planner-reveal-content .trip-summary>p.budget-warning { color:#86d9ef; font-size:13px; }
+.planner-reveal-content .itinerary-list { margin:25px 0; }
+.planner-reveal-content .itinerary-list>li { padding-bottom:24px; gap:15px; }
+.planner-reveal-content .itinerary-list>li:not(:last-child)::before { background:#315c736e; left:13px; top:29px; }
+.planner-reveal-content .timeline-dot { width:28px; height:28px; background:#0c2b40; border-color:#315c736e; color:#86d9ef; font-size:12px; }
+.planner-reveal-content .itinerary-list small { color:#95b9cc; font-size:11px; margin-bottom:7px; }
+.planner-reveal-content .itinerary-list strong,.planner-reveal-content .stop-name { color:#e2f3fc; font-size:15px!important; font-weight:500; }
+.planner-reveal-content .itinerary-stop-copy>span { color:#95b9cc; font-size:12px; margin-top:6px; }
+.planner-reveal-content .stop-controls { flex-direction:row; gap:4px; margin:0; }
+.planner-reveal-content .stop-controls button { color:#86d9ef; background:#0c2b40; border:1px solid #315c736e; width:28px; height:28px; border-radius:6px; font-size:14px; }
+.planner-reveal-content .plan-actions { border-color:var(--tool-border); padding-top:18px; }
+.planner-reveal-content .plan-actions button { color:#86d9ef; font-size:12px; }
+.planner-reveal-content .route-directions { color:#86d9ef; border-color:var(--tool-border); font-size:12px; padding-top:18px; }
+.planner-reveal-content .route-directions h4 { color:#e2f3fc; font-size:14px; }.planner-reveal-content .route-directions li { color:#95b9cc; font-size:12px; }
+.planner-reveal-content .planning-note { color:#95b9cc; font-size:11px; }.planner-reveal-content .route-note { color:#86d9ef; font-size:12px; }
+.planner-reveal-content .route-note button { color:#86d9ef; font-size:12px; }
+.planner-reveal-content .empty-itinerary h4 { color:#86d9ef; font-size:29px; }.planner-reveal-content .empty-itinerary p { color:#95b9cc; font-size:14px; line-height:1.8; }
+
+.planner-reveal-content>.milai-planner { max-width:720px; }
+.planner-reveal-content .milai-planner-heading { padding:4px 0 20px; border-bottom:1px solid var(--tool-border); gap:14px; }
+.planner-reveal-content .milai-planner-heading h3 { color:#e2f3fc; font-size:20px; }.planner-reveal-content .milai-planner-heading div>span { color:#95b9cc; font-size:11px; }
+.planner-reveal-content .milai-reply { background:#0c2b40; border:1px solid #315c736e; border-radius:14px; color:#95b9cc; font-size:14px; line-height:1.85; padding:20px; margin:22px 0; }
+.planner-reveal-content .planner-chat-form { background:#0c2b40; border:1px solid var(--tool-border); border-radius:11px; padding:8px 9px 8px 16px; }
+.planner-reveal-content .planner-chat-form input { color:#e2f3fc; font-size:14px; min-height:35px; }.planner-reveal-content .planner-chat-form input::placeholder { color:#95b9cc; }
+.planner-reveal-content .planner-chat-form button { background:var(--tool-accent); color:#fff; width:36px; height:36px; border-radius:8px; }
+.planner-reveal-content .milai-quick-prompts { gap:9px; margin-top:15px; }.planner-reveal-content .milai-quick-prompts button { border:1px solid var(--tool-border); border-radius:8px; padding:9px 12px; font-size:12px; background:var(--tool-surface); color:var(--tool-accent); }
+.planner-reveal-content .undo-plan { color:var(--tool-accent); font-size:12px; padding:5px 0; }
+.planner-reveal-content .reply-places button { color:var(--tool-accent); border-color:var(--tool-border); font-size:12px; padding:7px 0; }
+.ai-core .planner-intro h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(29px,3.2vw,41px); font-weight:500; letter-spacing:-.05em; }
+.planner-workspace-simple .planner-map { border-color:#5ebcda55; border-radius:23px; box-shadow:inset 0 1px #b5ecff1a,0 0 50px #0da8d619; }
+.map-is-open .options-orb { box-shadow:0 0 25px #23c4e91f,inset 0 1px #ffffff14; }
+.planner-reveal-content .planner-primary,.nearby-reference-tabs button[aria-pressed="true"],.planner-reveal-content .planner-chat-form button { color:#062332; box-shadow:0 0 22px #40c7f028; }
+.planner-reveal-content .planner-chat-form { border-radius:999px; box-shadow:0 0 30px #23b6f017,inset 0 1px #b9efff16; }
+.planner-reveal-content .planner-chat-form button { border-radius:50%; }
+.nearby-reference-bar { padding-bottom:18px; margin-bottom:20px; border-bottom-color:#78c7e025; }
+.nearby-reference-tabs { padding:5px; background:#051f31a1; border:1px solid #76c7e02f; border-radius:999px; }
+.nearby-reference-tabs button { display:flex; align-items:center; justify-content:center; gap:7px; color:#afd4e2; border-radius:999px; }
+.nearby-reference-tabs button[aria-pressed="true"] { background:linear-gradient(110deg,#8ee9f8,#6bbde9); }
+.nearby-reference-tabs button:disabled { color:#92b4c6; opacity:.5; }
+.planner-reveal-content .nearby-heading h3 { font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:400; }
+.planner-reveal-content .category-filters { margin:18px 0; }
+.planner-reveal-content .category-filters>span { color:#87b2c7; font-size:10px; }
+.planner-reveal-content .place-card { padding:0; border-radius:17px; background:linear-gradient(135deg,#0b293ed9,#0b2235); border-color:#75c5e135; box-shadow:inset 0 1px #b7ebff16; }
+.planner-reveal-content .place-card:hover { border-color:#7edbf2aa; box-shadow:0 0 25px #2ba9de1a; }
+.planner-reveal-content .place-card-main { display:block; position:relative; }
+.planner-reveal-content .place-card-art { position:relative; width:100%; height:218px; border-radius:0; }
+.planner-reveal-content .place-card-art::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,#041b3020 10%,transparent 35%,#031a2b88 65%,#031a2bf2); }
+.planner-reveal-content .place-card-art>img { width:100%; height:100%; object-fit:cover; }
+.planner-reveal-content .place-card-art>.place-art { background:radial-gradient(ellipse at 50% 30%,#1c739276,transparent 80%),linear-gradient(135deg,#123e59,#0a243a); color:#8cd9ee; }
+.planner-reveal-content .place-art svg { width:124px; height:104px; transform:translateY(-16px); opacity:.7; filter:drop-shadow(0 0 18px #30c2ee35); }
+.planner-reveal-content .place-card-copy { position:absolute; z-index:1; left:16px; right:16px; bottom:16px; padding:0; }
+.planner-reveal-content .place-card-copy>span { color:#b0d5e7; font-size:11px; }
+.planner-reveal-content .place-card-copy h4 { color:#effbff; font-size:18px; line-height:1.2; margin:7px 0 0; font-weight:500; }
+.place-visit-badge { position:absolute; z-index:2; top:12px; right:12px; display:flex; align-items:center; gap:5px; padding:6px 9px; border:1px solid #9ee7ff30; border-radius:999px; background:#0b2c43ce; color:#d9f3ff; font-size:10px; backdrop-filter:blur(10px); }
+.planner-reveal-content .place-card-bottom { display:flex; flex-direction:row; align-items:center; padding:11px 14px; gap:10px; }
+.planner-reveal-content .place-card-bottom>span { color:#a5cadd; font-size:12px; }
+.planner-reveal-content .place-card-bottom button { display:grid; place-items:center; margin-left:auto; width:32px; height:32px; min-height:32px; border:1px solid #69c5e65e; border-radius:50%; padding:0; background:#123f58; color:#b4f1ff; font-size:22px; }
+.planner-reveal-content .place-card.in-plan .place-card-bottom button { background:#8ee2f3; color:#063047; font-size:16px; }
+.planner-reveal-content .card-photo-credit { color:#9cbacb; font-size:11px; margin-left:auto; text-decoration:none; }
+.planner-reveal-content .card-photo-credit+button { margin-left:0; }
+.planner-reveal-content .empty-route-art { display:block; width:180px; height:90px; margin-bottom:16px; color:#79d9f1; filter:drop-shadow(0 0 16px #28bde635); }
+.planner-reveal-content .empty-itinerary h4 { font-family:'Space Grotesk',sans-serif; font-size:23px; }
+.planner-reveal-content .empty-itinerary p { font-size:13px; }
+.planner-reveal-content .milai-planner-heading>img { width:44px; height:53px; filter:drop-shadow(0 0 17px #39c0f344); }
+.place-pin { color:#9bdcf3; }.pin-nature { color:#7edce9; }.pin-culture { color:#a9cfff; }
+.place-pin.is-chosen .pin-core { background:#9ce6f8; border-color:#d1f6ff; color:#082d43; }
+.place-pin.is-focused .pin-label { background:#9ce6f8; color:#082d43; }
+@media (max-width:1100px) { .planner-reveal-content { padding:23px; }.nearby-reference-bar { align-items:stretch; flex-direction:column; gap:16px; }.nearby-reference-tabs { align-self:start; }.nearby-start-field { align-self:start; }.planner-reveal-content .planner-toolbar { flex-wrap:wrap; }.planner-reveal-content .place-card-art { height:205px; }.planner-reveal-content .place-card-copy h4 { font-size:17px; } }
+@media (max-width:800px) { .trip-planner .planner-doorway { font-size:11px; min-height:54px; }.planner-open-bar { padding:13px 20px; }.planner-reveal-content .place-cards { grid-template-columns:repeat(3,minmax(0,1fr)); }.nearby-heading { align-items:start; }.planner-reveal-content .place-search input { width:150px; } }
+@media (max-width:600px) { .map-is-open .ai-core { padding-top:18px; }.planner-workspace-simple .planner-map { border-radius:13px; }.planner-reveal-deck { margin-top:20px; }.trip-planner .planner-doorway { font-size:12px; }.planner-reveal-deck.has-open-tool { border-radius:18px; }.planner-open-bar { padding:12px 17px; min-height:70px; }.trip-planner .planner-open-title { font-size:16px; }.planner-reveal-content { padding:20px 16px; }.nearby-reference-tabs { width:100%; }.nearby-reference-tabs button { flex:1; font-size:12px; padding:10px 8px; }.nearby-start-field { width:100%; justify-content:space-between; }.nearby-start-field select { min-width:0; width:100%; }.nearby-reference-bar { margin-bottom:22px; padding-bottom:21px; }.nearby-heading { flex-direction:column; gap:15px; }.nearby-heading h3 { font-size:26px; }.nearby-context { font-size:12px; }.place-search { width:100%; }.planner-reveal-content .place-search input { width:100%; font-size:13px; }.planner-reveal-content .category-filters>span { font-size:10px; text-align:right; }.planner-reveal-content .place-cards { grid-template-columns:1fr; gap:15px; }.planner-reveal-content .place-card { padding:10px; }.planner-reveal-content .place-card:last-child:nth-child(odd) { grid-column:auto; max-width:none; }.planner-reveal-content .place-card-main { align-items:start; gap:13px; }.planner-reveal-content .place-card-art { width:100%; height:215px; }.planner-reveal-content .place-card-copy { padding:0; }.planner-reveal-content .place-card-copy h4 { font-size:17px; margin:6px 0; }.planner-reveal-content .place-card-copy p { font-size:12px; -webkit-line-clamp:2; }.planner-reveal-content .place-card-bottom { flex-direction:row; padding:13px 2px 0; align-items:center; }.planner-reveal-content .planner-field { flex-basis:100%; }.planner-reveal-content .time-field { flex-basis:100%; max-width:none; }.planner-reveal-content .pin-start-button { width:100%; justify-content:center; }.planner-reveal-content .build-day { width:100%; }.planner-reveal-content .trip-summary { padding:17px; }.planner-reveal-content .trip-summary strong { font-size:30px; }.planner-reveal-content .stop-controls { flex-direction:column; }.planner-reveal-content .itinerary-list>li { gap:11px; }.planner-reveal-content .itinerary-list small { font-size:10px; }.planner-reveal-content .milai-reply { padding:16px; font-size:13px; }.place-spotlight { padding:18px; }.spotlight-copy p { font-size:13px; }.spotlight-copy h3>span { display:block; margin:6px 0; } }

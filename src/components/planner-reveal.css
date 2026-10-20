@@ -1,0 +1,38 @@
+/* The same compact doorway / expanded content pattern as Ask Milai. */
+.planner-workspace.planner-workspace-simple { display:block; }
+.planner-workspace-simple .planner-map { height:clamp(240px,48svh,510px); }
+.planner-reveal-deck { position:relative; width:100%; max-width:1040px; margin:24px auto 0; }
+.planner-doorways { display:flex; justify-content:center; gap:12px; }
+.trip-planner .planner-doorway { position:relative; isolation:isolate; display:flex; justify-content:center; align-items:center; gap:10px; flex:1; min-width:0; max-width:176px; min-height:56px; overflow:hidden; padding:12px 15px; border:1px solid #6ec6d457; border-radius:999px; background:linear-gradient(115deg,#0db8d318,#0d2430e8 55%,#30739522); box-shadow:inset 0 1px 1px #ffffff16,0 4px 22px #0000000c; color:#cce5e8; font-size:12px; animation:planner-doorway-contract .8s cubic-bezier(.76,0,.24,1) both; transition:border-color .2s,background .2s; }
+.planner-doorway:nth-child(2) { animation-delay:.05s; }.planner-doorway:nth-child(3) { animation-delay:.1s; }.planner-doorway:nth-child(4) { animation-delay:.15s; }.planner-doorway:nth-child(5) { animation-delay:.2s; }
+.planner-doorway>span { white-space:nowrap; animation:milai-content-in .45s ease .25s both; }.planner-doorway>svg { flex-shrink:0; color:#9bcbd3; }.planner-doorway>small { font-size:9px; color:#a8c8c9; }
+.planner-tool-mascot { object-fit:contain; flex-shrink:0; }
+.planner-doorway:hover { border-color:#a2e5eb; background:#153642; }
+.planner-doorway-sheen { position:absolute; inset:0; z-index:-1; border-radius:inherit; background:linear-gradient(110deg,transparent 25%,#a7eeff22 48%,transparent 65%); transform:translateX(-110%); animation:milai-light-pass 1.1s ease .15s both; pointer-events:none; }
+.planner-open-bar { position:relative; display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:54px; margin-bottom:8px; }
+.trip-planner .planner-open-title { display:flex; align-items:center; gap:11px; background:transparent; border:0; padding:10px 0; color:#d4e6e5; font-size:15px; text-align:left; }
+.planner-open-title>svg { color:#8fbfc9; }.planner-collapse-mark { margin-left:10px; color:#83a3ad; font-size:18px; }
+.planner-more-tools { position:relative; flex-shrink:0; z-index:6; }
+.planner-more-orb { display:grid; place-items:center; width:43px; height:43px; border:1px solid #6ec6d455; border-radius:50%; color:#b2dce4; background:#11303ccc; box-shadow:inset 0 1px #ffffff10; animation:options-emerge .6s cubic-bezier(.22,1,.36,1) both; }
+.planner-more-orb:hover,.planner-more-orb[aria-expanded="true"] { border-color:#b0e3e8; }
+.planner-more-orb .option-dots i { animation:planner-dot-hint 2s ease .5s 2; }.planner-more-orb .option-dots i:nth-child(2) { animation-delay:.65s; }.planner-more-orb .option-dots i:nth-child(3) { animation-delay:.8s; }
+.planner-tools-menu { position:absolute; z-index:7; top:52px; right:0; width:214px; border:1px solid #7cb9c13f; border-radius:17px; padding:8px; background:#102b36fa; box-shadow:0 15px 40px #0005; animation:options-open .2s ease both; }
+.planner-tools-menu button { display:flex; align-items:center; gap:11px; width:100%; min-height:43px; border:0; border-radius:9px; background:transparent; color:#c4dadd; text-align:left; padding:10px 11px; font-size:12px; }.planner-tools-menu button:hover { background:#b9e4e410; }.planner-tools-menu button>svg { color:#8eb9c2; }
+.planner-tools-menu .planner-back-tools { margin-top:5px; border-top:1px solid #96bac329; border-radius:0 0 9px 9px; color:#91adb6; font-size:10px; }
+.planner-reveal-region { position:relative; border-top:1px solid #87b4c02b; }
+.planner-reveal-content { padding:20px 0 2px; transform-origin:top center; animation:planner-tool-expand .5s cubic-bezier(.22,1,.36,1) both; }
+.planner-reveal-content>.nearby-places { margin-top:0; }
+.planner-reveal-content>.planner-toolbar { margin:3px 0 0; padding-bottom:8px; border-bottom:0; }
+.planner-reveal-content>.itinerary-panel,.planner-reveal-content>.milai-planner { max-width:680px; margin:0 auto; padding-top:0; }
+.planner-reveal-content .trip-settings { padding-top:0; }
+.planner-reveal-content .empty-itinerary { padding:28px 0; }.planner-reveal-content .empty-itinerary p { max-width:420px; }
+.planner-reveal-content .trip-summary { padding-top:20px; }.planner-reveal-content .itinerary-list { max-width:none; }
+.planner-reveal-content>.planner-message { margin:18px 0 0; font-size:11px; }
+.planner-reveal-content .place-cards { row-gap:28px; }.planner-reveal-content .place-card-copy p { display:-webkit-box; }
+.planner-cancel-pick { display:block; margin:12px 0 0 auto; border:0; border-bottom:1px solid #8fadb34d; padding:4px 0; background:none; color:#b8cbcc; font-size:11px!important; }
+@keyframes planner-doorway-contract { from { opacity:0; clip-path:inset(0 -10% round 999px); transform:scaleX(1.06); filter:blur(3px); } 65% { opacity:1; filter:blur(0); } to { opacity:1; clip-path:inset(0 round 999px); transform:scaleX(1); filter:blur(0); } }
+@keyframes planner-tool-expand { from { opacity:0; clip-path:inset(0 32% 75% round 28px); transform:translateY(-8px) scale(.98); } to { opacity:1; clip-path:inset(0 round 0); transform:none; } }
+@keyframes planner-dot-hint { 0%,50%,100% { opacity:.65; transform:translateY(0); } 25% { opacity:1; transform:translateY(-2px); } }
+@media (max-width:800px) { .planner-reveal-deck { margin-top:19px; }.planner-doorways { gap:8px; }.trip-planner .planner-doorway { font-size:11px; padding:10px; gap:7px; min-height:52px; }.planner-doorway>svg { width:16px; height:16px; } }
+@media (max-width:600px) { .planner-doorways { flex-wrap:wrap; gap:10px; }.trip-planner .planner-doorway { flex:0 1 calc(50% - 5px); max-width:none; min-height:50px; font-size:12px; }.planner-doorway:last-child { flex-basis:calc(50% - 5px); }.planner-reveal-content { padding-top:17px; }.planner-open-title { font-size:14px; }.planner-reveal-content>.planner-toolbar { gap:20px 16px; }.planner-reveal-content .place-cards { row-gap:18px; }.planner-reveal-content .stop-controls { gap:3px; }.planner-tools-menu { width:206px; } }
+@media (prefers-reduced-motion:reduce) { .trip-planner .planner-doorway,.planner-doorway>span,.planner-doorway-sheen,.planner-more-orb,.planner-more-orb .option-dots i,.planner-tools-menu,.planner-reveal-content { animation:none; }.planner-doorway-sheen { display:none; }.trip-planner .planner-doorway { transition:none; } }

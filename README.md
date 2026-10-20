@@ -13,3 +13,27 @@ Seven CSS-clipped copies of the same source photograph align on one 2:3 canvas. 
 The exposed surfaces are flat image cuts, not reconstructed interiors or 3D geometry. Reduced-motion users see the intact, static tower without the long scroll track. Desktop cursor parallax, the opening fade, shared camera movement, slow light shift and decorative embers remain supported.
 
 The original tower image is supplied by the user.
+
+## AI guide entrance
+
+The first split opens a larger gap for the supplied AI mascot, feature introduction, and a link to `/ai/`. A short atmospheric wash connects the routes. The guide page adapts `AI chatbot design reference` into a responsive page with the mascot, a question input, and suggested prompts. Its return link opens the first tower reveal at `/#guide`. Reduced-motion visitors can reach the guide directly from the intact tower.
+
+Milai is a local, deterministic demo assistant. It reads a curated destination collection and can build or edit the shared itinerary; no AI model API is connected. Try “Plan 4 hours in Baghdad”, “Add Babylon”, “Remove Babylon”, “Show nearby places”, or “Plan 8 hours of nature in Erbil”. Unknown requests explain the supported actions. Changes can be undone, and the plan survives switching between chat and map during the current visit.
+
+## Map and day planner
+
+The guide page has animated AI and map buttons. Opening either reveals a three-dot switcher with the other option and a way back to both buttons. The chat prompt is preserved while switching.
+
+Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` to your own public Mapbox token (`pk.` prefix). Allow your deployed domain and localhost in the token's URL restrictions. Restart development after changing configuration; production static exports must be rebuilt with this variable set.
+
+The current planner uses an explicitly selected city or map pin. It makes no IP or browser-geolocation request. The previous location adapter and component remain available as unused prototype code, with their existing tests.
+
+Sixteen sourced historical, cultural and natural destinations are selectable through map pins, search and nearby suggestions. Choosing a place shows its brief and nearby alternatives. The map opens with five compact animated buttons: Plan a trip, Nearby places, Browse all, Your trip, and Ask Milai. Only one section expands at a time; a three-dot switcher opens the other options, and the section heading or Escape collapses it. Settings, prompts and itinerary state are preserved. Set 1–12 hours, choose optional return travel, then build a day or add, remove and reorder stops yourself. The UI is responsive, keyboard accessible, and respects reduced motion.
+
+The planner uses a light workspace and separate sand, mint, blue, peach and lilac tool surfaces. Nearby places defaults to the visitor's chosen starting area, even when another destination is selected. Its My starting point / Selected destination switch changes the recommendation reference and map view without changing the route origin. A city can be chosen directly within Nearby places; an existing custom map pin is also supported. Without a chosen start, the interface asks for an area rather than assuming a current location. Milai's generic nearby query also uses the start; explicitly asking about a named destination or “my destination” uses that destination.
+
+Mapbox GL JS loads on demand. Its Directions API provides the road route, leg times and expandable directions for chosen stops. Mapbox receives the selected route coordinates. If road directions cannot be fetched, the interface clearly labels the dashed connection as an estimated preview. The list and planning controls remain usable if the map fails. Travel and visit times are estimates, site pins are not verified entrances, and local access/opening times need checking. See [destination sources and planning assumptions](docs/destination-data.md).
+
+Run `node --experimental-strip-types --test tests/*.test.mjs` for planning, mock commands, route response validation and the earlier location adapters. Run `npm run typecheck` and `npm run build` before shipping. The static export contains no backend endpoint and does not persist location or itinerary data.
+
+The design brief for further exploration in Stitch is in [docs/stitch-planner-prompt.md](docs/stitch-planner-prompt.md).

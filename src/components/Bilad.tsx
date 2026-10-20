@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties } from 'react';
 import { floorClipPaths as floors, towerOutline, clipCoordinateScale, staircaseSeamPaths, seamFocusY } from './tower-clips';
+import { AtmosphereLink } from './AtmosphereTransition';
 
 // Fixed values keep the server and browser render identical.
 const embers = [
@@ -14,12 +15,23 @@ const embers = [
   [29, -6, 1.2, 20, -15, 32], [76, 10, 1.5, 17, -7, -18],
 ] as const;
 
+const floorStories = [
+  { title: 'Every layer tells a story.', text: 'Discover the places that shaped a culture.' },
+  { title: 'Follow a different path.', text: 'Let curiosity lead you through Bilad.' },
+  { title: 'Step into living heritage.', text: 'Find beauty in the details left behind.' },
+  { title: 'Meet the heart of a place.', text: 'Its people. Its craft. Its everyday rituals.' },
+  { title: 'Make room for discovery.', text: 'There is always another story around the corner.' },
+  { title: 'Your journey starts here.', text: 'Explore Iraq, one story at a time.' },
+] as const;
+
 export default function Bilad() {
   const towerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLElement>(null);
   const floorRefs = useRef<(HTMLDivElement | null)[]>([]);
   const focusRef = useRef<HTMLDivElement>(null);
-  const fadeRefs = useRef<(SVGPathElement | null)[]>([]);
+  const fadeRefs = useRef<(SVGGElement | null)[]>([]);
+  const storyRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const featureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -37,11 +49,21 @@ export default function Bilad() {
       const next = reduced.matches ? 0 : Math.min(floors.length - 1, Math.round(progress));
       stage = next;
       track.dataset.stage = String(stage);
-      const gap = viewport * .14;
+      if (featureRef.current) featureRef.current.inert = stage !== 1;
+      const gap = viewport * (stage === 1 ? .40 : .14);
       floorRefs.current.forEach((floor, index) => {
         if (floor) floor.style.transform = `translate3d(0,${-Math.max(0, stage - index) * gap}px,0)`;
-        const fade = fadeRefs.current[index];
-        if (fade) fade.style.opacity = stage > index ? '.85' : '0';
+      });
+      fadeRefs.current.forEach((fade, index) => {
+        if (fade) fade.style.opacity = stage > Math.floor(index / 2) ? '1' : '0';
+      });
+      storyRefs.current.forEach((story, index) => {
+        if (!story) return;
+        const active = stage === index + 1;
+        // Share the floors' coordinates so each story stays inside its own gap.
+        story.style.transform = `translate3d(0,${-Math.max(0, stage - index - .5) * gap}px,0)`;
+        story.dataset.active = String(active);
+        story.setAttribute('aria-hidden', String(!active));
       });
       const focus = focusRef.current;
       const tower = towerRef.current;
@@ -137,16 +159,25 @@ export default function Bilad() {
 
   return (
     <main className="scroll-journey" ref={trackRef}>
+      <div id="guide" className="guide-anchor" aria-hidden="true" />
       <svg className="tower-clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
         <defs>
           <filter id="floor-feather" filterUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536" colorInterpolationFilters="sRGB">
-            <feGaussianBlur stdDeviation="12" />
+            <feGaussianBlur stdDeviation="18" />
           </filter>
-          {staircaseSeamPaths.map((path, index) => (
+          <filter id="floor-feather-edge" filterUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536" colorInterpolationFilters="sRGB">
+            <feGaussianBlur stdDeviation="5" />
+          </filter>
+          {floors.map((_, index) => (
             <mask id={`floor-fade-${index}`} key={index} maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox" x="0" y="0" width="1" height="1" style={{ maskType: 'luminance' }}>
               <rect width="1" height="1" fill="white" />
               <g transform={clipCoordinateScale}>
-                <path ref={element => { fadeRefs.current[index] = element; }} className="floor-feather" d={path} fill="none" stroke="black" strokeWidth="38" filter="url(#floor-feather)" style={{ opacity: 0 }} />
+                {[index - 1, index].filter(seam => seam >= 0 && seam < staircaseSeamPaths.length).map(seam => (
+                  <g key={seam} ref={element => { fadeRefs.current[seam * 2 + (seam === index ? 0 : 1)] = element; }} className="floor-feather" style={{ opacity: 0 }}>
+                    <path d={staircaseSeamPaths[seam]} fill="none" stroke="black" strokeWidth="80" strokeLinecap="round" filter="url(#floor-feather)" />
+                    <path d={staircaseSeamPaths[seam]} fill="none" stroke="black" strokeWidth="24" strokeLinecap="round" filter="url(#floor-feather-edge)" />
+                  </g>
+                ))}
               </g>
             </mask>
           ))}
@@ -166,17 +197,43 @@ export default function Bilad() {
             <span>B</span><span>I</span><span className="inverted">L</span><span>A</span><span>D</span>
           </h1>
         </div>
+        <div ref={featureRef} className="ai-feature" aria-label="Meet the Bilad AI guide" inert>
+          <div className="ai-feature-content">
+            <img className="feature-mascot" src="/assets/ai%20mascot.png" alt="Bilad’s friendly blue spiral mascot" width="112" height="134" />
+            <h2>Find your way through Iraq.</h2>
+            <p>Meet your AI tour guide.</p>
+            <AtmosphereLink href="/ai/" className="guide-cta">
+              <span>Meet Milai</span>
+              <span className="guide-cta-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M6 12h11" />
+                  <path d="m13 8 4 4-4 4" />
+                </svg>
+              </span>
+            </AtmosphereLink>
+          </div>
+        </div>
+        <AtmosphereLink href="/ai/" className="reduced-guide-link">Meet Milai <span aria-hidden="true">→</span></AtmosphereLink>
       <div className="camera-frame">
         <div className="scene">
           <div className="atmosphere" aria-hidden="true" />
           <div className="tower-wrap">
-            <div ref={towerRef} className="tower" role="img" aria-label="Malwiya Minaret of Samarra, separated into seven scroll-animated tiers">
+            <div ref={towerRef} className="tower" role="group" aria-label="Malwiya Minaret of Samarra, separated into seven scroll-animated tiers">
               <div className="tower-focus" ref={focusRef}>
               <div className="tower-canvas">
                 {floors.map((_, index) => (
                   <div key={index} ref={element => { floorRefs.current[index] = element; }} className="tower-floor" aria-hidden="true" style={{ clipPath: `url(#tower-floor-${index})`, zIndex: floors.length - index }}>
-                    <div className="floor-surface" style={index < staircaseSeamPaths.length ? { maskImage: `url(#floor-fade-${index})` } : undefined}>
-                      <img className="floor-image" src="/assets/malwiya.png" alt="" fetchPriority={index === 0 ? 'high' : 'auto'} draggable="false" />
+                    <div className="floor-surface" style={{ maskImage: `url(#floor-fade-${index})` }}>
+                      <img className={`floor-image${index === floors.length - 1 ? ' floor-image-base' : ''}`} src="/assets/malwiya.png" alt="" fetchPriority={index === 0 ? 'high' : 'auto'} draggable="false" />
+                    </div>
+                  </div>
+                ))}
+                {floorStories.map((story, index) => (
+                  <div key={story.title} ref={element => { storyRefs.current[index] = element; }} className="floor-story" aria-hidden="true" data-active="false" style={{ top: `${seamFocusY[index] / 1536 * 100}%` }}>
+                    <div className={`floor-story-copy${index === 0 ? ' replaced-by-ai' : ''}`}>
+                      <span className="floor-story-number">{String(index + 1).padStart(2, '0')} / BILAD</span>
+                      <h2>{story.title}</h2>
+                      <p>{story.text}</p>
                     </div>
                   </div>
                 ))}
