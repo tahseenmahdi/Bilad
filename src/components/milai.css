@@ -1,0 +1,14 @@
+.milai-conversation { min-width: 0; }
+.milai-conversation .chat-plan-reply { margin: 1rem 0; }
+.milai-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; }
+.milai-proposal { margin: 1rem 0; padding: 1rem; border: 1px solid #8ba398; border-radius: 16px; background: #edf4ef; color: #26382e; }
+.milai-proposal button { margin: .35rem .4rem .35rem 0; }
+.milai-proposal .journey-bar { margin: 1rem 0; }
+.milai-service { padding: .8rem; margin-top: .7rem; border-radius: 12px; border: 1px solid #a6b9b0; }
+.milai-service small { display: block; margin-top: .4rem; }
+.milai-sources { margin-top: .75rem; font-size: .85rem; }
+.milai-sources > div { margin: .75rem 0; }
+.milai-sources a { text-decoration: underline; }
+.milai-conversation .journey-error { overflow-wrap: anywhere; }
+.chat-view .milai-conversation { max-height: min(62vh, 700px); overflow-y: auto; padding: 0 .4rem .5rem; }
+.milai-conversation button:focus-visible, .milai-conversation a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }

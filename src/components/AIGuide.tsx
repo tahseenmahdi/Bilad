@@ -5,9 +5,9 @@ import { AtmosphereLink } from './AtmosphereTransition';
 import ReturnToChoices from './ReturnToChoices';
 import BackToTower from './BackToTower';
 import dynamic from 'next/dynamic';
-import { applyMilaiCommand, getPlace, type MilaiReply, type Trip } from '@/lib/trip-planner';
-import { answerTouristQuestion, type TouristReply } from '@/lib/tourist-guide';
-import { useJourneys } from './JourneyProvider';
+import { getPlace } from '@/lib/trip-planner';
+import { useMilaiGuide } from './useMilaiGuide';
+import MilaiConversation, { MilaiMessages } from './MilaiConversation';
 import './trip-planner.css';
 import './planner-reveal.css';
 import './planner-colors.css';
@@ -25,14 +25,10 @@ const suggestions = ['What should I know before visiting Iraq?', 'Tell me about 
 
 export default function AIGuide() {
   const [prompt, setPrompt] = useState('');
-  const [submitted, setSubmitted] = useState('');
-  const { draft, setTrip } = useJourneys();
-  const trip = draft.trip;
-  const [previousTrip, setPreviousTrip] = useState<Trip | null>(null);
-  const [guideReply, setGuideReply] = useState<TouristReply | null>(null);
-  const [plannerReply, setPlannerReply] = useState<MilaiReply | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
   const [view, setView] = useState<'choices' | 'chat' | 'map'>('choices');
+  const guide = useMilaiGuide({ focused, onFocus: setFocused, onMap: () => setView('map') });
+  const trip = guide.store.draft.trip;
   const [optionsOpen, setOptionsOpen] = useState(false);
   const expanded = view === 'chat';
   const input = useRef<HTMLInputElement>(null);
@@ -41,7 +37,6 @@ export default function AIGuide() {
   const mapPanel = useRef<HTMLDivElement>(null);
   const switcher = useRef<HTMLDivElement>(null);
   const switchButton = useRef<HTMLButtonElement>(null);
-  useEffect(()=>{setPreviousTrip(null);setPlannerReply(null);},[draft.journeyId]);
 
   useEffect(() => {
     const followMapLink = () => {
@@ -50,8 +45,6 @@ export default function AIGuide() {
       if (place) {
         setFocused(place.id);
         setPrompt(`Tell me about ${place.name}`);
-        setSubmitted(`Explore Iraq: ${place.name}`);
-        setGuideReply(answerTouristQuestion(place.name));
         if (window.location.hash !== '#map') setView('chat');
       }
     };
@@ -92,26 +85,10 @@ export default function AIGuide() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!prompt.trim()) { input.current?.focus(); return; }
-    askGuide(prompt.trim());
+    void guide.ask(prompt.trim());
   }
 
-  function changeTrip(next: Trip) {
-    if (JSON.stringify(next) !== JSON.stringify(trip)) { setPreviousTrip(trip); setTrip(next); }
-  }
-  function askGuide(question: string) {
-    setSubmitted(question);
-    setGuideReply(answerTouristQuestion(question));
-  }
-  function askPlanner(question: string) {
-    const response = applyMilaiCommand(question, trip);
-    if (response.changed) changeTrip(response.trip);
-    setPlannerReply(response);
-  }
-  function undo() {
-    if (!previousTrip) return;
-    setTrip(previousTrip); setPreviousTrip(null);
-    setPlannerReply({trip:previousTrip,message:'Your previous plan is back.',recommendations:[],changed:false});
-  }
+  function showPlace(id: string) { setFocused(id); open('map'); }
 
   return (
     <main className={`ai-page${view === 'map' ? ' map-is-open' : ''}`}>
@@ -130,12 +107,12 @@ export default function AIGuide() {
         <h1 className="ai-question-heading">Lost? don&apos;t know how to discover iraq?</h1></>}
         <div className={`discovery-stage view-${view}`}>
         {view === 'choices' && <div className="discovery-choices">
-        <button ref={launch} type="button" className="ai-composer ai-launch discovery-launch" onClick={() => open('chat')}>
+        <button ref={launch} type="button" disabled={!guide.store.ready} className="ai-composer ai-launch discovery-launch" onClick={() => open('chat')}>
           <span className="launch-spark" aria-hidden="true">✧</span>
           <span className="launch-label">Ask Milai</span>
           <span className="launch-trace" aria-hidden="true" />
         </button>
-        <button type="button" className="ai-composer ai-launch discovery-launch map-launch" onClick={() => open('map')}>
+        <button type="button" disabled={!guide.store.ready} className="ai-composer ai-launch discovery-launch map-launch" onClick={() => open('map')}>
           <MapIcon /><span className="launch-label">Open map</span><span className="launch-trace" aria-hidden="true" />
         </button>
         </div>}
@@ -154,16 +131,16 @@ export default function AIGuide() {
         {expanded && <div className="chat-view"><form id="guide-composer" className="ai-composer ai-composer-opening" onSubmit={submit}>
           <span className="composer-compass" aria-hidden="true">✧</span>
           <label className="visually-hidden" htmlFor="guide-prompt">What would you like to discover in Iraq?</label>
-          <input id="guide-prompt" ref={input} value={prompt} onChange={event => setPrompt(event.target.value)} placeholder="Where would you like your story to begin?" autoComplete="off" maxLength={500} />
-          <button type="submit" aria-label="Begin conversation"><span aria-hidden="true">↑</span></button>
+          <input id="guide-prompt" ref={input} value={prompt} onChange={event => setPrompt(event.target.value)} placeholder="Where would you like your story to begin?" autoComplete="off" maxLength={1000} />
+          <button type="submit" aria-label="Begin conversation" disabled={guide.loading || !prompt.trim()}><span aria-hidden="true">↑</span></button>
         </form>
         <div className="ai-suggestions discovery-suggestions" aria-label="Suggested questions">
-          {suggestions.map(suggestion => <button key={suggestion} type="button" onClick={() => { setPrompt(suggestion); askGuide(suggestion); }}>{suggestion}<span aria-hidden="true">↗</span></button>)}
+          {suggestions.map(suggestion => <button key={suggestion} type="button" disabled={guide.loading} onClick={() => { setPrompt(suggestion); void guide.ask(suggestion); }}>{suggestion}<span aria-hidden="true">↗</span></button>)}
         </div>
-        <span className="chat-demo-label">Demo tourist guide · curated Iraq knowledge</span>
-        {guideReply && <div className="chat-plan-reply" role="status"><span className="ai-question">“{submitted}”</span><p>{guideReply.message}</p>{guideReply.recommendations.length>0&&<><div className="reply-places">{guideReply.recommendations.slice(0,3).map(id=><button key={id} onClick={()=>{setFocused(id);open('map');}}>{getPlace(id)?.name} ↗</button>)}</div><button className="planner-primary" onClick={()=>open('map')}>Explore on map <span aria-hidden="true">↗</span></button></>}</div>}
+        <MilaiMessages guide={guide} onPlace={showPlace}/>
+        <button className="planner-secondary" onClick={() => open('map')}>Explore your trip on the map ↗</button>
         </div>}
-        {view === 'map' && <div ref={mapPanel} tabIndex={-1} className="trip-planner-panel" aria-label="Your Iraq trip planner"><TripPlanner trip={trip} onChange={changeTrip} onAsk={askPlanner} reply={plannerReply} canUndo={!!previousTrip} onUndo={undo} focused={focused} onFocus={setFocused}/></div>}
+        {view === 'map' && <div ref={mapPanel} tabIndex={-1} className="trip-planner-panel" aria-label="Your Iraq trip planner"><TripPlanner trip={trip} onChange={guide.changeTrip} focused={focused} onFocus={setFocused} guideView={guide.guideView} onGuideViewHandled={guide.clearView} milai={<MilaiConversation guide={guide} onPlace={showPlace}/>}/></div>}
         </div>
       </section>
     </main>

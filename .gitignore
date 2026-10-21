@@ -1,8 +1,11 @@
 node_modules/
 .next/
+.next-playwright/
 out/
 *.tsbuildinfo
 .env*
 !.env.example
 *.tar.gz
 *.log
+test-results/
+playwright-report/

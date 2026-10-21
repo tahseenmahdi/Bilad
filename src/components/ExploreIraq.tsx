@@ -2,7 +2,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { places, type Place, type Coordinates } from '@/lib/destinations';
-import { applyMilaiCommand, nearestPlaces, tripCoordinates, type MilaiReply } from '@/lib/trip-planner';
+import { nearestPlaces, tripCoordinates } from '@/lib/trip-planner';
+import { useMilaiGuide } from './useMilaiGuide';
+import MilaiConversation from './MilaiConversation';
 import { useJourneys } from './JourneyProvider';
 import type { RoadRoute } from '@/lib/road-route';
 import { filters, governorate, matchesFilter, matchesSearch, normalizeSearch, periods, placePeriods, regions, trails, addJourneyStops, type Filter, type Period } from '@/lib/explore';
@@ -28,7 +30,8 @@ export default function ExploreIraq(){
   const [region,setRegion]=useState<string|null>(null),[trailId,setTrailId]=useState<string|null>(null),[selected,setSelected]=useState<string|null>(null),[detail,setDetail]=useState(false);
   const {draft,setTrip,ready:sessionReady}=useJourneys(),trip=draft.trip;
   const [view,setView]=useState<AtlasView|null>({key:0,points:national}),[notice,setNotice]=useState(''),[locating,setLocating]=useState(false);
-  const [picking,setPicking]=useState(false),[reply,setReply]=useState<MilaiReply|null>(null),[roadState,setRoadState]=useState<{key:string;route:RoadRoute|null}>({key:'',route:null});
+  const [picking,setPicking]=useState(false),[roadState,setRoadState]=useState<{key:string;route:RoadRoute|null}>({key:'',route:null});
+  const guide=useMilaiGuide({focused:selected,onFocus:id=>{setSelected(id);const place=places.find(p=>p.id===id);if(place)focus([place.coordinates]);},onMap:()=>setPanel('plan')});
   const pointKey=JSON.stringify(tripCoordinates(trip));
   const onRouteChange=useCallback((route:RoadRoute|null)=>setRoadState({key:pointKey,route}),[pointKey]);
   const panelRef=useRef<HTMLElement>(null), lastTrigger=useRef<HTMLElement|null>(null), modeRefs=useRef<(HTMLButtonElement|null)[]>([]), mounted=useRef(true);
@@ -88,7 +91,7 @@ export default function ExploreIraq(){
     </section>}
     <section className="atlas-panel atlas-planner" ref={planRef} hidden={panel!=='plan'} tabIndex={-1} aria-label="Plan a day trip">
       <div className="atlas-panel-top"><span className="atlas-eyebrow">BAP / PLAN YOUR DAY</span><button aria-label="Close planner" onClick={close}>×</button></div>
-      <TripPlanner atlas trip={trip} onChange={setTrip} focused={selected} onFocus={id=>{setSelected(id);const place=places.find(p=>p.id===id);if(place){setPanel('place');focus([place.coordinates]);}}} onAsk={question=>{const result=applyMilaiCommand(question,trip);setReply(result);if(result.changed)setTrip(result.trip);}} reply={reply} canUndo={false} onUndo={()=>{}} mapPicking={picking} onMapPicking={next=>{setPicking(next);if(next)setPanel(null);}} onRouteChange={onRouteChange}/>
+      <TripPlanner atlas trip={trip} onChange={guide.changeTrip} focused={selected} onFocus={id=>{setSelected(id);const place=places.find(p=>p.id===id);if(place){setPanel('place');focus([place.coordinates]);}}} guideView={guide.guideView} onGuideViewHandled={guide.clearView} milai={<MilaiConversation guide={guide} onPlace={id=>{const place=places.find(p=>p.id===id);if(place)choose(place);}}/>} mapPicking={picking} onMapPicking={next=>{setPicking(next);if(next)setPanel(null);}} onRouteChange={onRouteChange}/>
       <button className="atlas-text-button" onClick={()=>{const points=tripCoordinates(trip);if(points.length)focus(points);}}>Show active route on map ↗</button>
       <details className="atlas-note"><summary>Map key</summary><p>Aqua solid: road route · Aqua dashed: estimate · Coral dashed: thematic trail</p></details>
     </section>

@@ -9,7 +9,7 @@ type JourneyContext = {
   ready: boolean; collection: Collection; draft: Draft; dirty: boolean; feedback: string; error: string;
   setTrip: (value: SetStateAction<Trip>) => void; edit: (fields: Partial<JourneyFields>) => void;
   save: (asCopy?: boolean) => Promise<boolean>; open: (journey: Journey) => Promise<boolean>; create: () => Promise<boolean>;
-  transition: (journey: Journey, status: JourneyStatus) => Promise<void>; duplicate: (journey: Journey) => Promise<void>; remove: (journey: Journey) => Promise<void>; undo: (() => Promise<void>) | null;
+  transition: (journey: Journey, status: JourneyStatus) => Promise<boolean>; duplicate: (journey: Journey) => Promise<void>; remove: (journey: Journey) => Promise<void>; undo: (() => Promise<void>) | null;
 };
 const Context = createContext<JourneyContext | null>(null);
 export const useJourneys = () => { const value = useContext(Context); if (!value) throw new Error('JourneyProvider is missing'); return value; };
@@ -133,7 +133,8 @@ export default function JourneyProvider({ children }: { children: ReactNode }) {
           setUndo(null); setFeedback('Previous status restored.'); setError('');
         } catch (cause) { setError(storageMessage(cause)); }
       });
-    } catch (cause) { setError(storageMessage(cause)); }
+      return true;
+    } catch (cause) { setError(storageMessage(cause)); return false; }
   }
   async function duplicate(journey: Journey) {
     try { const copy = duplicateJourney(journey); await transact(data => putJourney(data, copy, null)); setError(''); setUndo(null); setFeedback('Copy added to Ideas.'); }

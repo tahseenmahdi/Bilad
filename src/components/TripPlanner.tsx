@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { origins, type Category, type Coordinates, type Place } from '@/lib/destinations';
-import { buildDay, estimateTrip, formatDistance, formatTime, getPlace, MAX_STOPS, nearbyReference, nearestPlaces, orderStops, tripCoordinates, tripPlaces, type MilaiReply, type NearbyMode, type Trip } from '@/lib/trip-planner';
+import { buildDay, estimateTrip, formatDistance, formatTime, getPlace, MAX_STOPS, nearbyReference, nearestPlaces, orderStops, tripCoordinates, tripPlaces, type NearbyMode, type Trip } from '@/lib/trip-planner';
+import type { GuideView } from './useMilaiGuide';
 import { fetchRoadRoute, type RoadRoute } from '@/lib/road-route';
 import JourneyBar from './JourneyBar';
 import PlannerReveal, { type PlannerTool } from './PlannerReveal';
@@ -13,18 +14,17 @@ import DestinationVisitInfo from './DestinationVisitInfo';
 
 const PlannerMap=dynamic(()=>import('./PlannerMap'),{ssr:false,loading:()=> <div className="planner-map planner-map-loading">Unfolding Iraq…</div>});
 const token=process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN?.trim();
-type Props={trip:Trip;onChange:(trip:Trip)=>void;onAsk:(prompt:string)=>void;reply:MilaiReply|null;onUndo:()=>void;canUndo:boolean;focused:string|null;onFocus:(id:string|null)=>void;atlas?:boolean;mapPicking?:boolean;onMapPicking?:(picking:boolean)=>void;onRouteChange?:(route:RoadRoute|null)=>void};
+type Props={trip:Trip;onChange:(trip:Trip)=>void;milai:ReactNode;guideView?:GuideView;onGuideViewHandled?:()=>void;focused:string|null;onFocus:(id:string|null)=>void;atlas?:boolean;mapPicking?:boolean;onMapPicking?:(picking:boolean)=>void;onRouteChange?:(route:RoadRoute|null)=>void};
 const categories: {id:Category|'all';name:string}[]=[{id:'all',name:'All places'},{id:'history',name:'History'},{id:'nature',name:'Nature'},{id:'culture',name:'Culture'}];
 
 
-export default function TripPlanner({trip,onChange,onAsk,reply,onUndo,canUndo,focused,onFocus,atlas=false,mapPicking=false,onMapPicking,onRouteChange}:Props) {
+export default function TripPlanner({trip,onChange,milai,guideView,onGuideViewHandled,focused,onFocus,atlas=false,mapPicking=false,onMapPicking,onRouteChange}:Props) {
   const [localPicking,setLocalPicking]=useState(false);
   const picking=atlas?mapPicking:localPicking;
   const setPicking=(next:boolean)=>{if(atlas)onMapPicking?.(next);else setLocalPicking(next);};
   const [locationState,setLocationState]=useState<'idle'|'locating'|'located'|'denied'|'unavailable'>('idle');
   const [search,setSearch]=useState('');
   const [message,setMessage]=useState('');
-  const [question,setQuestion]=useState('');
   const [nearbyMode,setNearbyMode]=useState<NearbyMode>('start');
   const [activeTool,setActiveTool]=useState<PlannerTool|null>(()=>trip.stopIds.length?'trip':atlas?'setup':trip.origin?null:'setup');
   const [routeState,setRouteState]=useState<{key:string;status:'loading'|'road'|'preview';route:RoadRoute|null}>({key:'',status:'preview',route:null});
@@ -49,6 +49,13 @@ export default function TripPlanner({trip,onChange,onAsk,reply,onUndo,canUndo,fo
     return list.filter(({place})=>!term || [place.name,place.region,place.arabic,...place.aliases].join(' ').toLowerCase().includes(term));
   },[listAnchor?.id,listAnchor?.coordinates,trip.category,search,activeTool]);
 
+  useEffect(()=>{
+    if(!guideView)return;
+    setActiveTool(guideView.tool);
+    if(guideView.reference)setNearbyMode(guideView.reference);
+    if(guideView.fit){autoFit.current=true;setRouteRetry(r=>r+1);}
+    onGuideViewHandled?.();
+  },[guideView]);
   useEffect(()=>{onRouteChange?.(road);},[road,onRouteChange]);
 
   useEffect(()=>{
@@ -80,7 +87,6 @@ export default function TripPlanner({trip,onChange,onAsk,reply,onUndo,canUndo,fo
     if(next.origin && next.origin !== trip.origin) setLocationState('idle');
     onChange(next);
   }
-  function ask(prompt:string) {autoFit.current=false;setMessage('');onAsk(prompt);}
   function build() {
     if(!trip.origin){setActiveTool('setup');setMessage('Choose your starting city or drop a pin first.');return;}
     const ids=buildDay(trip);
@@ -158,12 +164,7 @@ export default function TripPlanner({trip,onChange,onAsk,reply,onUndo,canUndo,fo
           </>}
         </section>
         <section className="milai-planner" aria-label="Milai trip assistant" hidden={activeTool!=='milai'}>
-          <div className="milai-planner-heading"><img src="/assets/ai%20mascot.png" alt="" width="32" height="38"/><div><h3>Milai</h3><span>Demo guide</span></div></div>
-          <p className="milai-reply" aria-live="polite">{reply?.message??'Where shall we go?'}</p>
-          {reply?.recommendations.length? <div className="reply-places">{reply.recommendations.slice(0,3).map(id=><button key={id} onClick={()=>onFocus(id)}>{getPlace(id)?.name} ↗</button>)}</div>:null}
-          <form className="planner-chat-form" onSubmit={e=>{e.preventDefault();if(question.trim()){ask(question);setQuestion('');}}}><label className="visually-hidden" htmlFor="planner-question">Ask Milai to change your plan</label><input id="planner-question" value={question} onChange={e=>setQuestion(e.target.value)} maxLength={500} placeholder="A little more history…"/><button type="submit" aria-label="Send to Milai" disabled={!question.trim()}>↑</button></form>
-          <div className="milai-quick-prompts">{['Plan a history day','Show nearby places','Plan a nature day'].map(q=><button key={q} onClick={()=>ask(q)}>{q.replace('Plan a ','').replace(' day','')}</button>)}</div>
-          {canUndo&&<button className="undo-plan" onClick={()=>{autoFit.current=false;setMessage('');onUndo();}}>↶ Undo last plan change</button>}
+          {milai}
         </section>
     {message&&<p className="planner-message" role="status">{message}</p>}
     </PlannerReveal>
