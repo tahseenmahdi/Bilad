@@ -401,9 +401,9 @@ export default function Bilad() {
         <div ref={journeysRef} className="journeys-feature floor-snippet" aria-label="Your journeys" inert>
           <div className="journeys-feature-content">
             <div className="journeys-mini-cards" aria-hidden="true">
-              <div><div className="journey-symbol"><img src="/assets/journey-icons/ideas-1.svg" alt="" width="96" height="96" draggable="false"/></div><span>Ideas</span><small>A spark of possibility</small></div>
-              <div><div className="journey-symbol"><img src="/assets/journey-icons/planned-1.svg" alt="" width="96" height="96" draggable="false"/></div><span>Planned</span><small>A path taking shape</small></div>
-              <div><div className="journey-symbol"><img src="/assets/journey-icons/done-1.svg" alt="" width="96" height="96" draggable="false"/></div><span>Done</span><small>A memory to keep</small></div>
+              <div><div className="journey-symbol"><img src="/assets/journey-icons/ideas-3.svg" alt="" width="96" height="96" draggable="false"/></div><span>Ideas</span><small>A spark of possibility</small></div>
+              <div><div className="journey-symbol"><img src="/assets/journey-icons/planned-2.svg" alt="" width="96" height="96" draggable="false"/></div><span>Planned</span><small>A path taking shape</small></div>
+              <div><div className="journey-symbol"><img src="/assets/journey-icons/done-2.svg" alt="" width="96" height="96" draggable="false"/></div><span>Done</span><small>A memory to keep</small></div>
             </div>
             <h2>Every journey, yours.</h2><p>Keep your ideas, plans, and memories together.</p>
             <AtmosphereLink href="/journeys/" className="guide-cta"><span>Open your journeys</span><span className="guide-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h11" /><path d="m13 8 4 4-4 4" /></svg></span></AtmosphereLink>

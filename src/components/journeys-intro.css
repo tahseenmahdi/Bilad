@@ -64,6 +64,16 @@
 .journeys-feature p{display:none}
 .journeys-feature h2{margin:12px 0 14px}
 }
+@media(max-height:450px) and (min-width:600px){
+.journeys-feature-content{display:grid;grid-template-columns:auto auto;column-gap:28px;align-items:center;width:max-content;max-width:100%}
+.journeys-mini-cards{grid-row:1 / span 2;gap:6px}
+.journeys-mini-cards>div{width:76px;padding:5px 5px 8px;border-radius:14px}
+.journey-symbol{height:36px}
+.journey-symbol img{width:32px;height:32px}
+.journeys-mini-cards span{font-size:9px;margin:6px 3px 0}
+.journeys-feature h2{font-size:24px;margin:0 0 10px}
+.journeys-feature .guide-cta{justify-self:center}
+}
 @media(prefers-reduced-motion:reduce){.journeys-anchor{top:0}
 .journeys-feature,.journeys-feature-content{transition:none}
 .journeys-feature *,.journeys-mini-cards::before{animation:none!important}
