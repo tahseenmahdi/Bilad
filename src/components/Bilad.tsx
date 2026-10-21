@@ -355,7 +355,7 @@ export default function Bilad() {
           <div className="ai-feature-content">
             <img className="feature-mascot" src="/assets/ai%20mascot.png" alt="Bilad’s friendly blue spiral mascot" width="112" height="134" />
             <h2>Find your way through Iraq.</h2>
-            <p>Meet your AI tour guide.</p>
+            <p>An AI that knows Iraq.</p>
             <AtmosphereLink href="/ai/" className="guide-cta">
               <span>Meet Milai</span>
               <span className="guide-cta-icon" aria-hidden="true">

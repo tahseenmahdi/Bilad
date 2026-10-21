@@ -18,7 +18,7 @@ The original tower image is supplied by the user.
 
 The first split opens a larger gap for the supplied AI mascot, feature introduction, and a link to `/ai/`. A short atmospheric wash connects the routes. The guide page adapts `AI chatbot design reference` into a responsive page with the mascot, a question input, and suggested prompts. Its return link opens the first tower reveal at `/#guide`. Reduced-motion visitors can reach the guide directly from the intact tower.
 
-Milai is a local, deterministic demo assistant. It reads a curated destination collection and can build or edit the shared itinerary; no AI model API is connected. Try “Plan 4 hours in Baghdad”, “Add Babylon”, “Remove Babylon”, “Show nearby places”, or “Plan 8 hours of nature in Erbil”. Unknown requests explain the supported actions. Changes can be undone, and the plan survives switching between chat and map during the current visit.
+Milai is a local, deterministic demo tourist assistant; no AI model API is connected. The general chat answers questions from the curated destination collection without reading or changing the active journey. The map mode contains the itinerary assistant and saved journey controls, where prompts such as “Plan 4 hours in Baghdad”, “Add Babylon”, or “Show nearby places” can update the map plan and be undone.
 
 ## Map and day planner
 
