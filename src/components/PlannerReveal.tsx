@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import ReturnToChoices from './ReturnToChoices';
 
 export type PlannerTool = 'setup' | 'nearby' | 'browse' | 'trip' | 'milai';
 const options: {id: PlannerTool; label: string; icon: string}[] = [
@@ -59,7 +60,7 @@ export default function PlannerReveal({active,onChange,tripCount,children}:{acti
         <button ref={heading} className="planner-open-title" type="button" aria-label={`Collapse ${current.label}`} aria-expanded="true" aria-controls={panelId} onClick={()=>open(null)}><ToolIcon kind={current.icon}/><span>{current.label}</span><span className="planner-collapse-mark" aria-hidden="true">−</span></button>
         <div className="planner-more-tools">
           <button ref={more} type="button" className="planner-more-orb" aria-label="Other map tools" aria-expanded={menuOpen} aria-controls={menuId} onClick={()=>setMenuOpen(!menuOpen)}><span className="option-dots" aria-hidden="true"><i/><i/><i/></span></button>
-          <div className="planner-tools-menu" id={menuId} ref={menu} hidden={!menuOpen}>{options.filter(option=>option.id!==active).map(option=><button type="button" key={option.id} data-tool={option.id} onClick={()=>open(option.id)}><ToolIcon kind={option.icon}/>{option.label}</button>)}<button className="planner-back-tools" type="button" onClick={()=>open(null)}>Back to all options</button></div>
+          <div className="planner-tools-menu" id={menuId} ref={menu} hidden={!menuOpen}>{options.filter(option=>option.id!==active).map(option=><button type="button" key={option.id} data-tool={option.id} onClick={()=>open(option.id)}><ToolIcon kind={option.icon}/>{option.label}</button>)}<ReturnToChoices label="All options" compact onClick={()=>open(null)} /></div>
         </div>
       </div>
     </>}

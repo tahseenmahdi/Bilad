@@ -1,0 +1,11 @@
+.travel-shortcuts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:24px 0; }
+.travel-shortcut { position:relative; display:flex; align-items:center; gap:13px; overflow:hidden; padding:18px; border:1px solid #83d2e738; border-radius:15px; background:linear-gradient(115deg,#23607938,#082535b0); color:#e2f3fc; text-decoration:none; box-shadow:inset 0 1px #d6f8ff0c; transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
+.travel-shortcut::before { content:''; position:absolute; inset:0; background:linear-gradient(110deg,transparent 20%,#c4f5ff12 50%,transparent 75%); transform:translateX(-120%); transition:transform .6s ease; pointer-events:none; }
+.travel-shortcut:hover { transform:translateY(-2px); border-color:#83d2e784; box-shadow:0 8px 25px #04131f33; }.travel-shortcut:hover::before { transform:translateX(120%); }
+.travel-shortcut-icon { flex:none; display:grid; place-items:center; width:40px; height:40px; border:1px solid #91e4f32b; border-radius:12px; background:#74d9e90c; color:#9be6f1; }.travel-shortcut-icon svg { width:22px; height:22px; }
+.travel-shortcut-copy { flex:1; min-width:0; }.travel-shortcut-copy strong { display:block; font:500 14px/1.3 'Space Grotesk',sans-serif; letter-spacing:-.02em; }.travel-shortcut-copy small { display:block; color:#96b8c7; font-size:10px; line-height:1.5; margin-top:5px; }
+.travel-shortcut-arrow { color:#97dce9; transition:transform .25s ease; }.travel-shortcut:hover .travel-shortcut-arrow { transform:translate(2px,-2px); }
+.travel-shortcut:focus-visible { outline:2px solid #a5e9f6; outline-offset:4px; }
+.services-core>.travel-shortcuts { width:min(760px,100%); margin:30px auto 0; text-align:left; }
+@media(max-width:600px) { .travel-shortcuts { grid-template-columns:1fr; gap:10px; }.travel-shortcut { padding:14px; }.travel-shortcut-copy strong { font-size:13px; } }
+@media(prefers-reduced-motion:reduce) { .travel-shortcut,.travel-shortcut::before,.travel-shortcut-arrow { transition:none; } }

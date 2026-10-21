@@ -1,0 +1,39 @@
+{
+  "provider": "Microsoft Edge online speech via edge-tts",
+  "generatedAt": "2026-10-20T17:57:51.532Z",
+  "note": "Synthetic Iraqi-locale voice. Native Iraqi pronunciation review is still needed.",
+  "clips": [
+    {
+      "id": "taxi-take-me",
+      "text": "ممكن توصلني لهذا المكان؟",
+      "file": "taxi-take-me.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "taxi-fare",
+      "text": "بشكد التوصيلة؟",
+      "file": "taxi-fare.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "taxi-stop-here",
+      "text": "هنا زين، بلا زحمة",
+      "file": "taxi-stop-here.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "taxi-wait",
+      "text": "ممكن تنتظرني شويّة؟",
+      "file": "taxi-wait.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    }
+  ]
+}

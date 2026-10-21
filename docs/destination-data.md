@@ -1,6 +1,6 @@
 # Destination collection
 
-Researched 19 October 2026. The app ships 16 curated records in `src/lib/destinations.ts`. This is a starter collection, not a claim to cover every attraction or rank popularity statistically. Short descriptions are independently written summaries. Each record keeps a descriptive source and a separate coordinate source when needed.
+Researched 19–20 October 2026. The app ships 24 curated records in `src/lib/destinations.ts`. This is a starter collection, not a claim to cover every attraction or rank popularity statistically. Short descriptions are independently written summaries. Each record keeps a descriptive source and a separate coordinate source when needed.
 
 ## Sources
 
@@ -14,17 +14,22 @@ Researched 19 October 2026. The app ships 16 curated records in `src/lib/destina
 | Al-Mustansiriya, Abbasid Palace | [Iraq's UNESCO tentative-list submission](https://whc.unesco.org/en/tentativelists/5880/) |
 | Aqar Quf | [UNESCO tentative list](https://whc.unesco.org/en/tentativelists/6797/) |
 | Amedi | [UNESCO tentative list](https://whc.unesco.org/en/tentativelists/5601/) |
+| Ashur | [UNESCO World Heritage](https://whc.unesco.org/en/list/1130/) |
+| Lalish Temple | [UNESCO tentative list](https://whc.unesco.org/en/tentativelists/6467/) |
+| Kirkuk Citadel | [UNESCO tentative list](https://whc.unesco.org/en/tentativelists/6522/) |
+| Al-Ukhaidir Fortress | [UNESCO tentative list](https://whc.unesco.org/en/tentativelists/1467/) |
+| Wadi Al-Salam | [UNESCO tentative list](https://whc.unesco.org/en/tentativelists/5578/) |
 | Al-Nouri Mosque | [UNESCO's restoration project](https://www.unesco.org/en/revive-mosul/al-nouri-mosque) |
 | Al-Mutanabbi Street | [Rafidain](https://rafidainiraq.com/en/mutanabbi/) |
-| Gali Ali Beg, Bekhal | [Visit Kurdistan's Rawanduz guide](https://www.visitkurdistan.com/rawanduz/) |
+| Gali Ali Beg, Bekhal, Rawanduz Canyon | [Visit Kurdistan's Rawanduz guide](https://www.visitkurdistan.com/rawanduz/) |
 | Dukan Lake | [Key Biodiversity Areas](https://www.keybiodiversityareas.org/en/site/factsheet/32136) |
-| Taq Kasra | [Wikipedia](https://en.wikipedia.org/wiki/Taq_Kasra) |
+| Taq Kasra, Imam Husayn Shrine, Mount Korek | Linked Wikipedia reference pages |
 
 Coordinates use UNESCO where suitable, IRCICA for Al-Mustansiriya, and the linked gazetteers/Wikipedia coordinate records for individual sites. Dukan is pinned near the southern dam, rather than in the middle of the reservoir. Chibayish is the town starting area, not a driveable point inside the wetlands. Bekhal's coordinate was cross-checked against its Wikipedia record; conflicting travel-site coordinates were not used. Pins represent site areas and must be checked for entrances/access before launch.
 
-Only sites actually inscribed are described as World Heritage. Tentative-list sites are not given that badge. Visit allowances of 45–120 minutes are editorial planning assumptions, not source-reported opening times. No live availability, ticket prices, access permissions or traffic claims are made.
+Only sites actually inscribed are described as World Heritage. Tentative-list sites are not given that badge. Visit allowances of 45–150 minutes are editorial planning assumptions, not source-reported opening times. No live availability, ticket prices, access permissions or traffic claims are made.
 
-Existing local photos are reused. Credits for Babylon, Ur, Erbil and Hatra remain in `public/assets/credits.json` and appear in the selected-place view. Samarra uses the user-supplied tower image. Other places use original neutral line illustrations, not substituted photographs.
+Every destination now has a local photo. Credits for the original Babylon, Ur, Erbil and Hatra assets remain in `public/assets/credits.json`; the sourced additions and filled photo gaps are documented in `docs/photo-sources.json`. Samarra continues to use the user-supplied tower image. Available credits appear in the selected-place view.
 
 ## Planning and routing
 

@@ -58,7 +58,7 @@ export function orderStops(trip: Trip): string[] {
     const next=remaining.shift()!;
     result.push(next.id); point=next.coordinates;
   }
-  return result;
+  return [...result,...trip.stopIds.filter(id=>!getPlace(id))];
 }
 export function formatTime(minutes: number) {
   const rounded=Math.max(0,Math.round(minutes));

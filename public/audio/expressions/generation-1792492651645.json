@@ -1,0 +1,167 @@
+{
+  "provider": "Microsoft Edge online speech via edge-tts",
+  "generatedAt": "2026-10-20T10:38:53.383Z",
+  "note": "Synthetic Iraqi-locale voice. Native Iraqi pronunciation review is still needed.",
+  "clips": [
+    {
+      "id": "hala",
+      "text": "هلا",
+      "file": "hala.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "ahlan-wa-sahlan",
+      "text": "أهلاً وسهلاً",
+      "file": "ahlan-wa-sahlan.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "sabah-al-khair",
+      "text": "صباح الخير",
+      "file": "sabah-al-khair.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "shlonkum",
+      "text": "شلونكم؟",
+      "file": "shlonkum.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "chai",
+      "text": "ممكن چاي؟",
+      "file": "chai.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "tayyib",
+      "text": "كلش طيب",
+      "file": "tayyib.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "tislam-al-ayadi",
+      "text": "تسلم الأيادي",
+      "file": "tislam-al-ayadi.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "bil-afiya",
+      "text": "بالعافية",
+      "file": "bil-afiya.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "shgad",
+      "text": "بشكد هذا؟",
+      "file": "shgad.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "mumkin-ashuf",
+      "text": "ممكن أشوف؟",
+      "file": "mumkin-ashuf.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "akhudha",
+      "text": "آخذه",
+      "file": "akhudha.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "la-shukran",
+      "text": "لا، شكراً",
+      "file": "la-shukran.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "shukran",
+      "text": "شكراً",
+      "file": "shukran.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "bila-zahma",
+      "text": "بلا زحمة",
+      "file": "bila-zahma.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "warda",
+      "text": "وردة",
+      "file": "warda.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "kullish-helu",
+      "text": "كلش حلو",
+      "file": "kullish-helu.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "ma-al-salama",
+      "text": "مع السلامة",
+      "file": "ma-al-salama.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "ashufkum",
+      "text": "أشوفكم على خير",
+      "file": "ashufkum.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "fursa-saeeda",
+      "text": "فرصة سعيدة",
+      "file": "fursa-saeeda.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    },
+    {
+      "id": "yawm-saeed",
+      "text": "يوم سعيد",
+      "file": "yawm-saeed.mp3",
+      "voice": "ar-IQ-RanaNeural",
+      "rate": "-8%",
+      "synthetic": true
+    }
+  ]
+}

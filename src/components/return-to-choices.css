@@ -1,0 +1,61 @@
+/* A shared return control, distinct from the category launch buttons. */
+button.return-to-choices,
+.options-popover button.return-to-choices,
+.planner-tools-menu button.return-to-choices {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: fit-content;
+  min-height: 46px;
+  margin: 8px 0 0;
+  padding: 6px 15px 6px 7px;
+  border: 1px solid #81dce74a;
+  border-radius: 16px;
+  background: linear-gradient(120deg,#71dcec16,#0b2534b3 65%,#66bee80a);
+  box-shadow: inset 0 1px 0 #d7faff14,0 4px 16px #00000012;
+  color: #c7e8ee;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .22s,background .22s,box-shadow .22s,transform .22s;
+}
+.return-to-choices .return-to-choices-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #86e5ef38;
+  border-radius: 10px;
+  color: #9ce7f1;
+  background: linear-gradient(145deg,#90e9f11a,#7bd3f006);
+  box-shadow: inset 0 1px #ffffff0d;
+}
+.return-to-choices-icon svg { width: 17px; height: 17px; transition: transform .28s cubic-bezier(.22,1,.36,1); }
+.return-to-choices-label { flex: 1; }
+.return-to-choices-grid { display: grid; grid-template-columns: repeat(2,4px); gap: 3px; margin-left: 6px; opacity: .6; transition: opacity .22s; }
+.return-to-choices-grid i { width: 4px; height: 4px; border: 1px solid currentColor; border-radius: 1px; }
+button.return-to-choices:hover,
+.options-popover button.return-to-choices:hover,
+.planner-tools-menu button.return-to-choices:hover {
+  border-color: #9ae9f27d;
+  background: linear-gradient(120deg,#71dcec26,#103449c9 65%,#66bee814);
+  box-shadow: inset 0 1px #d7faff20,0 0 22px #64d8ed14;
+  transform: translateY(-1px);
+  color: #e5fbff;
+}
+.return-to-choices:hover .return-to-choices-icon svg { transform: translateX(-2px); }
+.return-to-choices:hover .return-to-choices-grid { opacity: 1; }
+button.return-to-choices:active { transform: translateY(0); }
+button.return-to-choices:focus-visible { outline: 2px solid #a7eeff; outline-offset: 4px; }
+.options-popover button.return-to-choices-compact,
+.planner-tools-menu button.return-to-choices-compact { width: 100%; min-height: 44px; padding: 6px 10px 6px 6px; border-radius: 13px; gap: 8px; }
+.return-to-choices-compact .return-to-choices-icon { width: 26px; height: 26px; flex-basis: 26px; border-radius: 8px; }
+@media (prefers-reduced-motion:reduce) {
+  button.return-to-choices,.return-to-choices-icon svg,.return-to-choices-grid { transition: none; }
+}

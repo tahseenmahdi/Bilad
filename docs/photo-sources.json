@@ -28,5 +28,132 @@
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "local": "public/assets/abbasid.png"
+  },
+  {
+    "id": "aqar-quf",
+    "page": "https://commons.wikimedia.org/wiki/File:2._Aqar-Quf_(Dur-Kurigalzu),_western_Baghdad,_Iraq._The_remains_of_the_Kassite_era_ziggurat_appear.jpg",
+    "author": "Osama Shukir Muhammed Amin FRCP(Glasg)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/aqar-quf.jpg"
+  },
+  {
+    "id": "ctesiphon",
+    "page": "https://commons.wikimedia.org/wiki/File:001125-TaqKasra-Iraq-IMG_7914-2.jpg",
+    "author": "Safa.daneshvar",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/taq-kasra.jpg"
+  },
+  {
+    "id": "marshes",
+    "page": "https://commons.wikimedia.org/wiki/File:Chibaish_Marches,_Iraq_-_An_Nasiriyah.jpg",
+    "author": "Unknown author",
+    "license": "CC0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "local": "public/assets/marshes.jpg"
+  },
+  {
+    "id": "al-nuri",
+    "page": "https://commons.wikimedia.org/wiki/File:Al-Nouri_Complex_Visitor_Center.jpg",
+    "author": "الدبوني",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/al-nuri.jpg"
+  },
+  {
+    "id": "amedi",
+    "page": "https://commons.wikimedia.org/wiki/File:Amadiya_-_panorama.jpg",
+    "author": "Hardscarf",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/amedi.jpg"
+  },
+  {
+    "id": "dukan",
+    "page": "https://commons.wikimedia.org/wiki/File:5._Lake_Dukan,_Sulaymaniyah_Governorate,_Iraqi_Kurdistan.jpg",
+    "author": "Osama Shukir Muhammed Amin FRCP(Glasg)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/dukan.jpg"
+  },
+  {
+    "id": "gali-ali-beg",
+    "page": "https://commons.wikimedia.org/wiki/File:Gali_Ali_Beg_waterfall_in_Erbil,_the_Kurdistan_Region_of_Iraq_02.jpg",
+    "author": "Levi Clancy",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/gali-ali-beg.jpg"
+  },
+  {
+    "id": "bekhal",
+    "page": "https://commons.wikimedia.org/wiki/File:Bekhal_Waterfall_03.jpg",
+    "author": "Khoshhat",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "local": "public/assets/bekhal.jpg"
+  },
+  {
+    "id": "ashur",
+    "page": "https://commons.wikimedia.org/wiki/File:Iraq._Ashur_(Qalat_Sherqat)._40_miles_S._of_Mosul._A_general_view_of_the_ruins_LOC_matpc.16187.jpg",
+    "author": "Matson Collection",
+    "license": "Public domain",
+    "local": "public/assets/ashur.jpg"
+  },
+  {
+    "id": "lalish",
+    "page": "https://commons.wikimedia.org/wiki/File:Lalish_temple_in_northern_Iraq.jpg",
+    "author": "Luay Qassim Hassan",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/lalish.jpg"
+  },
+  {
+    "id": "kirkuk-citadel",
+    "page": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Kirkuk_Citadel,_Kirkuk,_Iraq.jpg",
+    "author": "Enasiqph",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/kirkuk-citadel.jpg"
+  },
+  {
+    "id": "ukhaidir",
+    "page": "https://commons.wikimedia.org/wiki/File:Al-Ukhaidir_Fortress_(30655095821).jpg",
+    "author": "David Stanley",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "local": "public/assets/ukhaidir.jpg"
+  },
+  {
+    "id": "wadi-al-salam",
+    "page": "https://commons.wikimedia.org/wiki/File:001123-WadiAlSalam-IMG_7703-2.jpg",
+    "author": "Safa.daneshvar",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/wadi-al-salam.jpg"
+  },
+  {
+    "id": "imam-husayn",
+    "page": "https://commons.wikimedia.org/wiki/File:Imam_Hussein_Shrine.jpg",
+    "author": "جبار محسن",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/imam-husayn.jpg"
+  },
+  {
+    "id": "korek",
+    "page": "https://commons.wikimedia.org/wiki/File:Korek_Mountain_in_Kurdistan_Iraq.jpg",
+    "author": "Alli Khalil",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/korek.jpg"
+  },
+  {
+    "id": "rawanduz-canyon",
+    "page": "https://commons.wikimedia.org/wiki/File:Rwandz_Canyon_2.JPG",
+    "author": "Tominerbil",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "local": "public/assets/rawanduz-canyon.jpg"
   }
 ]

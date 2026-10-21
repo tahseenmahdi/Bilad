@@ -6,8 +6,46 @@ import { places, type Coordinates } from '@/lib/destinations';
 import { tripCoordinates, type Trip } from '@/lib/trip-planner';
 import type { RoadRoute } from '@/lib/road-route';
 
-type Props={trip:Trip;focused:string|null;route:RoadRoute|null;picking:boolean;onPick:(coordinates:Coordinates)=>void;onFocus:(id:string)=>void;nearbyView?:{key:string;coordinates:Coordinates}};
+type Props={trip:Trip;focused:string|null;route:RoadRoute|null;picking:boolean;locationStatus?:string;onPick:(coordinates:Coordinates)=>void;onFocus:(id:string|null)=>void;nearbyView?:{key:string;coordinates:Coordinates}};
 const token=process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN?.trim();
+const routeColors=['#57d9ff','#f2c96d','#ff8192','#a994ff','#62dfa5','#ff9f5a','#e47de8'];
+type JourneyFeature={type:'Feature';properties:{color:string;leg:number};geometry:{type:'LineString';coordinates:Coordinates[]}};
+
+function distanceSquared(a:Coordinates,b:Coordinates) {
+  return (a[0]-b[0])**2+(a[1]-b[1])**2;
+}
+
+function visitLabel(minutes:number) {
+  if(minutes<60)return `${minutes} min`;
+  const hours=Math.floor(minutes/60);
+  const remainder=minutes%60;
+  return `${hours} hr${hours===1?'':'s'}${remainder?` ${remainder} min`:''}`;
+}
+
+function journeyFeatures(points:Coordinates[],road:RoadRoute|null):JourneyFeature[] {
+  if(points.length<2)return [];
+  if(!road)return points.slice(1).map((point,index)=>({type:'Feature',properties:{color:routeColors[index%routeColors.length],leg:index+1},geometry:{type:'LineString',coordinates:[points[index],point]}}));
+  const coordinates=road.geometry.coordinates;
+  const cuts=[0];
+  let cursor=0;
+  for(let pointIndex=1;pointIndex<points.length-1;pointIndex++) {
+    let closest=Math.min(cursor+1,coordinates.length-1);
+    let closestDistance=Infinity;
+    const lastCandidate=Math.max(closest,coordinates.length-(points.length-pointIndex));
+    for(let coordinateIndex=closest;coordinateIndex<=lastCandidate;coordinateIndex++) {
+      const distance=distanceSquared(coordinates[coordinateIndex],points[pointIndex]);
+      if(distance<closestDistance){closestDistance=distance;closest=coordinateIndex;}
+    }
+    cuts.push(closest);cursor=closest;
+  }
+  cuts.push(coordinates.length-1);
+  return cuts.slice(1).map((end,index)=>({
+    type:'Feature',
+    properties:{color:routeColors[index%routeColors.length],leg:index+1},
+    geometry:{type:'LineString',coordinates:coordinates.slice(cuts[index],end+1)},
+  }));
+}
+
 export default function PlannerMap(props: Props) {
   const container=useRef<HTMLDivElement>(null);
   const mapRef=useRef<GLMap|null>(null);
@@ -48,7 +86,9 @@ export default function PlannerMap(props: Props) {
             if(layer.type==='symbol'&&(layer.id.includes('poi')||layer.id.includes('transit')))map.setLayoutProperty(layer.id,'visibility','none');
           }
           map.addSource('journey',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
-          map.addLayer({id:'journey-line',type:'line',source:'journey',paint:{'line-color':'#83e6ff','line-width':2.5,'line-opacity':.95},layout:{'line-join':'round','line-cap':'round'}});
+          map.addLayer({id:'journey-casing',type:'line',source:'journey',paint:{'line-color':'#06141c','line-width':7,'line-opacity':.82},layout:{'line-join':'round','line-cap':'round'}});
+          map.addLayer({id:'journey-line',type:'line',source:'journey',paint:{'line-color':['get','color'],'line-width':4,'line-opacity':1},layout:{'line-join':'round','line-cap':'round'}});
+          map.addLayer({id:'journey-direction',type:'symbol',source:'journey',layout:{'symbol-placement':'line','symbol-spacing':85,'text-field':'›','text-size':17,'text-font':['DIN Pro Medium','Arial Unicode MS Regular'],'text-rotation-alignment':'map','text-keep-upright':false,'text-allow-overlap':true},paint:{'text-color':['get','color'],'text-halo-color':'#071820','text-halo-width':1.5,'text-opacity':.95}});
           markers.current=places.map(place=>{
             const button=document.createElement('button');
             button.type='button';button.className=`place-pin pin-${place.category}`;
@@ -77,13 +117,15 @@ export default function PlannerMap(props: Props) {
     const map=mapRef.current;
     const points=tripCoordinates(props.trip);
     const source=map.getSource('journey') as GeoJSONSource;
-    source.setData(points.length>1?{type:'Feature',properties:{},geometry:props.route?.geometry??{type:'LineString',coordinates:points}}:{type:'FeatureCollection',features:[]});
+    source.setData({type:'FeatureCollection',features:journeyFeatures(points,props.route)});
     map.setPaintProperty('journey-line','line-dasharray',props.route?[1,0]:[2,2]);
+    map.setPaintProperty('journey-casing','line-dasharray',props.route?[1,0]:[2,2]);
     for(const {id,button} of markers.current) {
       const index=props.trip.stopIds.indexOf(id);
       button.classList.toggle('is-chosen',index>=0);
       button.classList.toggle('is-focused',props.focused===id);
       button.setAttribute('aria-pressed',String(props.focused===id));
+      button.style.setProperty('--leg-color',index>=0?routeColors[index%routeColors.length]:'');
       button.querySelector('.pin-core')!.textContent=index>=0?String(index+1):'';
     }
     if(props.trip.origin)startMarker.current?.setLngLat(props.trip.origin.coordinates).addTo(map);
@@ -114,10 +156,30 @@ export default function PlannerMap(props: Props) {
     if(!ready||!mapRef.current||!view)return;
     mapRef.current.flyTo({center:view.coordinates,zoom:10,duration:reduced()?0:1000});
   },[nearbyKey,ready]);
+  const selected=places.find(place=>place.id===props.focused);
   return <div className={`planner-map${props.picking?' is-picking':''}`}>
     <div ref={container} className="planner-map-canvas" aria-label="Map of Iraqi destinations" />
-    {props.picking&&<div className="planner-map-label">Tap the map to set your start</div>}
+    {(props.picking||props.locationStatus)&&<div className={`planner-map-label${props.locationStatus?' is-locating':''}`} role="status">{props.picking?'Tap the map to set your start':props.locationStatus}</div>}
     {(!ready||failed)&&<div className="planner-map-fallback" role="status"><span>◇</span><p>{failed?'The map is unavailable. You can still choose a city and plan below.':'Unfolding Iraq…'}</p>{failed&&<button onClick={()=>setRetry(r=>r+1)}>Retry map</button>}</div>}
+    {ready&&selected&&<article key={selected.id} className={`map-place-popup popup-${selected.category}`} role="dialog" aria-label={`${selected.name} place preview`}>
+      <div className="map-popup-photo">
+        {selected.image&&<img src={selected.image} alt={`View of ${selected.name}`} />}
+        <span className="map-popup-photo-shade" aria-hidden="true" />
+        <span className="map-popup-index" aria-hidden="true">{String(places.findIndex(place=>place.id===selected.id)+1).padStart(2,'0')}</span>
+      </div>
+      <div className="map-place-popup-copy">
+        <button type="button" className="map-popup-close" aria-label="Close place preview" onClick={()=>props.onFocus(null)}>×</button>
+        <span className={`map-popup-category pin-${selected.category}`}><i aria-hidden="true" />{selected.category}<b aria-hidden="true">/</b>{selected.region}</span>
+        <h3><span className="map-popup-title-en">{selected.name}</span><span className="map-popup-title-ar" lang="ar">{selected.arabic}</span></h3>
+        <span className="map-popup-title-rule" aria-hidden="true" />
+        <p>{selected.brief}</p>
+        <div className="map-popup-meta">
+          <span className="map-popup-duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>{visitLabel(selected.visitMinutes)}</span>
+          <a className="map-story-link" href={selected.source} target="_blank" rel="noreferrer"><span>Read the story</span><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h11"/><path d="m13 8 4 4-4 4"/></svg></i></a>
+        </div>
+        <button className="map-visit-details" onClick={()=>{const details=document.getElementById(`visit-details-${selected.id}`);if(details){(details as HTMLDetailsElement).open=true;details.scrollIntoView({behavior:reduced()?'instant':'smooth',block:'center'});details.querySelector('summary')?.focus({preventScroll:true});}}}>Plan your visit <span aria-hidden="true">↓</span></button>
+      </div>
+    </article>}
     <button className="map-overview" aria-label="Show all Iraqi destinations" onClick={()=>mapRef.current?.fitBounds([[42.3,30.5],[47.5,37.5]],{padding:55,duration:reduced()?0:1000})}>↗ <span>All places</span></button>
   </div>;
 }

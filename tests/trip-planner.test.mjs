@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {existsSync} from 'node:fs';
 import {places,origins} from '../src/lib/destinations.ts';
 import {initialTrip,buildDay,estimateTrip,distanceKm,nearestPlaces,nearbyReference,orderStops,applyMilaiCommand,tripCoordinates} from '../src/lib/trip-planner.ts';
 const baghdad=origins.find(o=>o.id==='baghdad');
 const trip={...initialTrip,origin:baghdad};
 test('catalogue has unique sourced places, valid Iraq coordinates and visit allowances',()=>{
-  assert.equal(new Set(places.map(p=>p.id)).size,16);
-  for(const p of places){assert.ok(p.source.startsWith('https://'));assert.ok(p.coordinateSource.startsWith('https://'));assert.ok(p.visitMinutes>0);assert.ok(p.coordinates[0]>38&&p.coordinates[0]<49);assert.ok(p.coordinates[1]>29&&p.coordinates[1]<38);}
+  assert.equal(places.length,24);
+  assert.equal(new Set(places.map(p=>p.id)).size,places.length);
+  for(const p of places){assert.ok(p.source.startsWith('https://'));assert.ok(p.coordinateSource.startsWith('https://'));assert.ok(p.image?.startsWith('/assets/'));assert.ok(existsSync(new URL(`../public${p.image}`,import.meta.url)));assert.ok(p.visitMinutes>0);assert.ok(p.coordinates[0]>38&&p.coordinates[0]<49);assert.ok(p.coordinates[1]>29&&p.coordinates[1]<38);}
 });
 test('build waits for chosen start and fits visits, driving, buffer and return within budget',()=>{
   assert.deepEqual(buildDay(initialTrip),[]);

@@ -6,7 +6,7 @@ Run `npm install` and `npm run dev` to preview. `npm run build` exports the prod
 
 ## Scroll prototype
 
-The scene stays pinned across seven viewport heights, with seven fixed poses: the intact tower and six successive splits. Crossing each half-viewport threshold selects a pose, and a one-second eased transition carries the floors to their fixed positions. After scrolling pauses, the page settles to that pose's viewport stop. Touch gestures finish before snapping. Reversing scroll reassembles the tower.
+The scene stays pinned across seven viewport heights, with seven resting poses: the intact tower and six successive splits. Each wheel gesture (including its momentum tail), vertical swipe, or arrow/page key press advances at most one floor. A light 2 px wheel input or 6 px vertical swipe is enough to move; wheel gestures rearm after a 100 ms quiet gap, and direction changes respond immediately. New input retargets the camera while it is moving, preserving velocity through a critically damped spring instead of locking input until a fixed animation finishes. Floor geometry interpolates directly, without a second easing or sticky resting zones. Floors, edge feathering, depth fading, camera movement, and snippet visibility share that clock. Snippet entrances finish quickly. Scrollbar dragging and explicit Home/End navigation remain available; a partial scrollbar stop settles after 100 ms. Reversing scroll reassembles the tower and restores its edges. Pinch zoom and reduced-motion browsing retain native behavior.
 
 Seven CSS-clipped copies of the same source photograph align on one 2:3 canvas. The camera gently zooms and centers the newest gap; curved SVG masks feather the lifted floors' bottom edges and restore them on reassembly. The wordmark shrinks into a crisp upper-left signature during close-ups, outside the moving scene, and returns to its centered opening position on reassembly. Shared cubic cut paths follow the middle of the staircase bands in `src/components/tower-clips.ts`, with a subpixel overlap for clean reassembly. No separate floor image files are needed.
 
@@ -34,6 +34,14 @@ The planner uses a light workspace and separate sand, mint, blue, peach and lila
 
 Mapbox GL JS loads on demand. Its Directions API provides the road route, leg times and expandable directions for chosen stops. Mapbox receives the selected route coordinates. If road directions cannot be fetched, the interface clearly labels the dashed connection as an estimated preview. The list and planning controls remain usable if the map fails. Travel and visit times are estimates, site pins are not verified entrances, and local access/opening times need checking. See [destination sources and planning assumptions](docs/destination-data.md).
 
-Run `node --experimental-strip-types --test tests/*.test.mjs` for planning, mock commands, route response validation and the earlier location adapters. Run `npm run typecheck` and `npm run build` before shipping. The static export contains no backend endpoint and does not persist location or itinerary data.
+Run `node --experimental-strip-types --test tests/*.test.mjs` for planning, journey persistence, mock commands, route response validation and the earlier location adapters. Run `npm run typecheck` and `npm run build` before shipping. The static export contains no backend endpoint. Saved journeys persist on this device; the editing draft is tab-local.
 
 The design brief for further exploration in Stitch is in [docs/stitch-planner-prompt.md](docs/stitch-planner-prompt.md).
+
+## Explore Iraq
+
+The fourth Malwiya reveal opens /explore/, a standalone cultural atlas with Places, Trails, Regions and Time modes. Plan a trip opens the same planning controls used by Milai, editing one shared active draft. See [Explore Iraq architecture, content limits and validation](docs/explore-iraq.md).
+
+## Your journeys
+
+The fifth reveal opens `/journeys/`: Ideas, Planned and Done, with editable day trips, optional dates and personal notes. Save from either map, reopen in either map, move between statuses, complete with Undo, duplicate, or delete with confirmation and Undo. Opening another trip protects unsaved edits. Journeys are stored on the same device and browser profile, with validated versioned storage, legacy session migration, failure feedback and cross-tab conflict checks. There is no account or cloud backup. See [architecture, persistence limitations and verification](docs/journeys.md).
