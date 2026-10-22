@@ -27,7 +27,7 @@ export default function AIGuide() {
   const [prompt, setPrompt] = useState('');
   const [focused, setFocused] = useState<string | null>(null);
   const [view, setView] = useState<'choices' | 'chat' | 'map'>('choices');
-  const guide = useMilaiGuide({ focused, onFocus: setFocused, onMap: () => setView('map') });
+  const guide = useMilaiGuide({ onFocus: setFocused, onMap: () => setView('map') });
   const trip = guide.store.draft.trip;
   const [optionsOpen, setOptionsOpen] = useState(false);
   const expanded = view === 'chat';
@@ -84,26 +84,34 @@ export default function AIGuide() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (guide.loading || !guide.store.ready) return;
     if (!prompt.trim()) { input.current?.focus(); return; }
-    void guide.ask(prompt.trim());
+    sendQuestion(prompt);
+  }
+
+  function sendQuestion(question: string) {
+    if (guide.loading || !guide.store.ready) return;
+    setPrompt('');
+    void guide.ask(question.trim());
+    input.current?.focus({ preventScroll: true });
   }
 
   function showPlace(id: string) { setFocused(id); open('map'); }
 
   return (
-    <main className={`ai-page${view === 'map' ? ' map-is-open' : ''}`}>
+    <main className={`ai-page${view === 'map' ? ' map-is-open' : expanded ? ' chat-is-open' : ''}`}>
       <header className="ai-header">
         <AtmosphereLink href="/" className="ai-brand"><span aria-label="Bilad">BI<span className="inverted">L</span>AD</span></AtmosphereLink>
         <div className="journey-map-links">{view === 'map' && <AtmosphereLink href="/journeys/">Your journeys ↗</AtmosphereLink>}<BackToTower href="/#guide" /></div>
       </header>
       <div className="ai-page-particles" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       <div className="ai-ghost-tower" aria-hidden="true" />
-      <section className="ai-core" aria-label="Milai AI tour guide" onKeyDown={event => {
+      <section className="ai-core" aria-label="Milai local tour guide" onKeyDown={event => {
         if (event.key !== 'Escape') return;
         if (optionsOpen) { setOptionsOpen(false); switchButton.current?.focus(); }
         else if (view === 'chat') open('choices');
       }}>
-        {view !== 'map' && <><div className="ai-mascot-halo"><img src="/assets/ai%20mascot.png" alt="Bilad AI guide mascot" width="160" height="192" className="ai-mascot" /></div>
+        {view === 'choices' && <><div className="ai-mascot-halo"><img src="/assets/ai%20mascot.png" alt="Bilad local guide mascot" width="160" height="192" className="ai-mascot" /></div>
         <h1 className="ai-question-heading">Lost? don&apos;t know how to discover iraq?</h1></>}
         <div className={`discovery-stage view-${view}`}>
         {view === 'choices' && <div className="discovery-choices">
@@ -128,17 +136,23 @@ export default function AIGuide() {
             <ReturnToChoices label="Both options" compact onClick={() => open('choices')} />
           </div>
         </div>}
-        {expanded && <div className="chat-view"><form id="guide-composer" className="ai-composer ai-composer-opening" onSubmit={submit}>
+        {expanded && <div className="chat-view milai-chat-shell">
+        <header className="milai-chat-header">
+          <div className="milai-chat-identity"><span className="milai-header-avatar"><img src="/assets/ai%20mascot.png" alt="" width="36" height="43" /></span><div><h1>Milai<span aria-hidden="true">✧</span></h1><p>Your Iraq companion</p></div></div>
+          <button type="button" className="milai-map-link" aria-label="Explore your trip on the map" onClick={() => open('map')}><MapIcon/><span>Map</span></button>
+        </header>
+        <MilaiMessages guide={guide} onPlace={showPlace}/>
+        <div className="milai-composer-dock">
+        {!guide.lastQuestion && <div className="ai-suggestions milai-starter-prompts" aria-label="Suggested questions">
+          {suggestions.map(suggestion => <button key={suggestion} type="button" disabled={guide.loading} onClick={() => sendQuestion(suggestion)}>{suggestion}<span aria-hidden="true">↗</span></button>)}
+        </div>}
+        <form id="guide-composer" className="ai-composer milai-chat-composer" onSubmit={submit}>
           <span className="composer-compass" aria-hidden="true">✧</span>
           <label className="visually-hidden" htmlFor="guide-prompt">What would you like to discover in Iraq?</label>
-          <input id="guide-prompt" ref={input} value={prompt} onChange={event => setPrompt(event.target.value)} placeholder="Where would you like your story to begin?" autoComplete="off" maxLength={1000} />
-          <button type="submit" aria-label="Begin conversation" disabled={guide.loading || !prompt.trim()}><span aria-hidden="true">↑</span></button>
+          <input id="guide-prompt" ref={input} value={prompt} onChange={event => setPrompt(event.target.value)} placeholder="Ask Milai about Iraq…" autoComplete="off" maxLength={1000} />
+          <button type="submit" aria-label="Begin conversation" disabled={guide.loading || !guide.store.ready || !prompt.trim()}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button>
         </form>
-        <div className="ai-suggestions discovery-suggestions" aria-label="Suggested questions">
-          {suggestions.map(suggestion => <button key={suggestion} type="button" disabled={guide.loading} onClick={() => { setPrompt(suggestion); void guide.ask(suggestion); }}>{suggestion}<span aria-hidden="true">↗</span></button>)}
         </div>
-        <MilaiMessages guide={guide} onPlace={showPlace}/>
-        <button className="planner-secondary" onClick={() => open('map')}>Explore your trip on the map ↗</button>
         </div>}
         {view === 'map' && <div ref={mapPanel} tabIndex={-1} className="trip-planner-panel" aria-label="Your Iraq trip planner"><TripPlanner trip={trip} onChange={guide.changeTrip} focused={focused} onFocus={setFocused} guideView={guide.guideView} onGuideViewHandled={guide.clearView} milai={<MilaiConversation guide={guide} onPlace={showPlace}/>}/></div>}
         </div>

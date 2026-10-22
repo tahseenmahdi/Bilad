@@ -33,7 +33,7 @@ test('round trip contains a return leg and one-way omits it',()=>{
   assert.equal(tripCoordinates({...sample,roundTrip:false}).length,2);
   assert.ok(estimateTrip(sample).total>estimateTrip({...sample,roundTrip:false}).total);
 });
-test('mock guide changes origin/time and builds a matching itinerary',()=>{
+test('local guide changes origin/time and builds a matching itinerary',()=>{
   const reply=applyMilaiCommand('Plan 4 hours in Baghdad',initialTrip);
   assert.equal(reply.trip.origin.id,'baghdad');assert.equal(reply.trip.minutes,240);
   assert.ok(reply.trip.stopIds.length>0);assert.equal(reply.changed,true);
@@ -99,7 +99,7 @@ test('nearby has no invented current position and respects a custom starting pin
   assert.deepEqual(reference.coordinates,origin.coordinates);
   assert.equal(nearestPlaces(reference.coordinates)[0].place.id,'erbil-citadel');
 });
-test('mock nearby requests default to the start and support an explicit destination',()=>{
+test('local nearby commands default to the start and support an explicit destination',()=>{
   const current={...trip,stopIds:['babylon']};
   const nearStart=applyMilaiCommand('Show nearby places',current);
   assert.match(nearStart.message,/to Baghdad/);
