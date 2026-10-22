@@ -1,8 +1,7 @@
 /* JavaScript eases a single scroll position; CSS must not add a second lag. */
 .scroll-journey .tower-focus,
 .scroll-journey .tower-floor,
-.scroll-journey .floor-feather,
-.scroll-journey .floor-story { transition: none; }
+.scroll-journey .floor-feather { transition: none; }
 .scroll-journey .tower-floor { will-change: transform,opacity; }
 
 .scroll-journey[data-stage] .opening .floor-snippet {
@@ -14,14 +13,6 @@
 .scroll-journey[data-stage="2"] .opening .say-feature,
 .scroll-journey[data-stage="3"] .opening .services-feature,
 .scroll-journey[data-stage="4"] .opening .explore-feature { transition: none; }
-.scroll-journey .floor-story-copy { transition: opacity .15s,visibility 0s .15s; }
-.scroll-journey .floor-story[data-active="true"] .floor-story-copy {
-  opacity: var(--snippet-opacity,1);
-  translate: 0 var(--snippet-shift,0px);
-  filter: blur(var(--snippet-blur,0px));
-  transform: translateY(-50%);
-  transition: visibility 0s;
-}
 .scroll-journey :is(.ai-feature-content,.say-feature-content,.services-feature-content,.explore-feature-content) { transition-duration: .28s; }
 .scroll-journey[data-stage="1"] .feature-mascot { animation: snippet-art-arrive .36s cubic-bezier(.22,1,.36,1) both,guide-float 7s ease-in-out .4s infinite; }
 .scroll-journey[data-stage="1"] .ai-feature h2 { animation: snippet-copy-arrive .3s cubic-bezier(.22,1,.36,1) .04s both; }
@@ -40,6 +31,5 @@
 }
 @media (prefers-reduced-motion:reduce) {
   .scroll-journey .floor-snippet,
-  .scroll-journey .floor-snippet *,
-  .scroll-journey .floor-story-copy { animation: none !important; transition: none !important; translate: none; }
+  .scroll-journey .floor-snippet * { animation: none !important; transition: none !important; translate: none; }
 }

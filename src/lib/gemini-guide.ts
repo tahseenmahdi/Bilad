@@ -1,5 +1,5 @@
-import type { GuideContext, GuideResponse } from './ai-guide';
-import { guideRequestContext, GUIDE_LIMITS } from './ai-guide';
+import type { GuideResponse } from './ai-guide';
+import { guideRequestContext, GUIDE_LIMITS, validateGuideRequest, validateGuideResponse } from './ai-guide';
 import type { Trip } from './trip-planner';
 
 export type GeminiGuideResult = {
@@ -19,25 +19,26 @@ export async function askGeminiGuide(
   journey?: { id: string; title: string; status: 'idea' | 'planned' | 'done' },
 ): Promise<GeminiGuideResult> {
   const context = guideRequestContext(message, trip, focused, journey);
+  const request = validateGuideRequest({
+    message,
+    history: history.slice(-GUIDE_LIMITS.history).map(h => ({ role: h.role, text: h.text.slice(0, 1000) })),
+    context,
+  });
 
   const res = await fetch('/api/guide', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: message.slice(0, GUIDE_LIMITS.message),
-      history: history.slice(-GUIDE_LIMITS.history).map(h => ({
-        role: h.role,
-        text: h.text.slice(0, 1000),
-      })),
-      context,
-    }),
+    body: JSON.stringify(request),
+    cache: 'no-store',
   });
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: 'Network error' }));
-    throw new Error(body.error ?? `Guide API error (${res.status})`);
+    throw new Error(typeof body?.error?.message === 'string' ? body.error.message : `Milai’s AI service returned ${res.status}. Please retry.`);
   }
 
-  const response: GuideResponse = await res.json();
+  const body: unknown = await res.json();
+  if (!body || typeof body !== 'object' || !('success' in body) || body.success !== true || !('data' in body)) throw new Error('Milai’s AI service returned an invalid response. Please retry.');
+  const response: GuideResponse = validateGuideResponse(body.data, request);
   return { response, fallback: false };
 }

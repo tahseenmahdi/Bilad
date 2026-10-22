@@ -8,7 +8,7 @@ import './journeys.css';
 type JourneyContext = {
   ready: boolean; collection: Collection; draft: Draft; dirty: boolean; feedback: string; error: string;
   setTrip: (value: SetStateAction<Trip>) => void; edit: (fields: Partial<JourneyFields>) => void;
-  save: (asCopy?: boolean) => Promise<boolean>; open: (journey: Journey) => Promise<boolean>; create: () => Promise<boolean>;
+  save: (asCopy?: boolean, plannedTrip?: Trip) => Promise<boolean>; open: (journey: Journey) => Promise<boolean>; create: () => Promise<boolean>;
   transition: (journey: Journey, status: JourneyStatus) => Promise<boolean>; duplicate: (journey: Journey) => Promise<void>; remove: (journey: Journey) => Promise<void>; undo: (() => Promise<void>) | null;
 };
 const Context = createContext<JourneyContext | null>(null);
@@ -87,10 +87,11 @@ export default function JourneyProvider({ children }: { children: ReactNode }) {
 
   function edit(fields: Partial<JourneyFields>) { setDraft(d => ({ ...d, ...fields })); setFeedback(''); }
   function setTrip(value: SetStateAction<Trip>) { setDraft(d => ({ ...d, trip: typeof value === 'function' ? value(d.trip) : value })); setFeedback(''); }
-  async function save(asCopy = false) {
+  async function save(asCopy = false, plannedTrip?: Trip) {
     if (busy.current) return false;
     busy.current = true;
-    const snapshot = current.current;
+    const before = current.current;
+    const snapshot = plannedTrip ? { ...before, trip: plannedTrip, status: 'idea' as const, title: before.title === 'Untitled day trip' ? `${plannedTrip.origin?.name ?? 'Iraq'} day trip` : before.title, travelDate: '', notes: '' } : before;
     try {
       let saved: Journey | undefined;
       await transact(data => {
@@ -100,7 +101,7 @@ export default function JourneyProvider({ children }: { children: ReactNode }) {
         return putJourney(data, saved, previous?.revision ?? null);
       });
       // If typing continued during a lock wait, keep those edits unsaved.
-      setDraft(d => fingerprint(d) === fingerprint(snapshot) ? draftFrom(saved!) : { ...d, journeyId: saved!.id, baseRevision: saved!.revision, baseline: fingerprint(saved!) });
+      setDraft(d => fingerprint(d) === fingerprint(before) ? draftFrom(saved!) : { ...d, journeyId: saved!.id, baseRevision: saved!.revision, baseline: fingerprint(saved!) });
       setError(''); setUndo(null); setFeedback(snapshot.trip.origin?.id === 'device' ? 'Saved without device location. Choose a city or map pin for your start.' : 'Saved.'); return true;
     } catch (cause) { setError(storageMessage(cause)); return false; }
     finally { busy.current = false; }

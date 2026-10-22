@@ -1,6 +1,6 @@
 # Explore Iraq
 
-`/explore/` is a static-export-compatible cultural atlas. The fourth tower reveal links to it; `/#explore` restores reveal 4. Reduced-motion navigation includes the same destination. Resizing the tower preserves the current floor.
+`/explore/` is a prerendered cultural atlas in the Bilad Next application. The fourth tower reveal links to it; `/#explore` restores reveal 4. Reduced-motion navigation includes the same destination. Resizing the tower preserves the current floor.
 
 ## Architecture
 

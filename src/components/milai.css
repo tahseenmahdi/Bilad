@@ -38,6 +38,12 @@
 .milai-chat-error { border-color: #c1906b60; color: #ad573d; }
 .milai-chat-error p, .milai-chat-notice p { margin: 0; }
 .milai-chat-error button, .milai-chat-notice button { padding: 6px 0; border: 0; background: transparent; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.milai-action-proposal { margin-left: 44px; max-width: min(520px,calc(100% - 44px)); padding: 18px 20px; border: 1px solid #85dce177; border-radius: 18px; background: linear-gradient(140deg,#89dce719,#89dce707); box-shadow: 0 10px 28px #06152024; color: var(--milai-ink); animation: milai-message-arrive .38s ease-out both; overflow-wrap: anywhere; }
+.milai-proposal-kicker { color: var(--milai-accent); font-size: 10px; font-weight: 700; letter-spacing: .16em; }
+.milai-action-proposal p { margin: 9px 0 16px; font-size: 13px; line-height: 1.7; }
+.milai-proposal-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+.milai-proposal-actions button { border: 1px solid var(--milai-line); border-radius: 10px; padding: 10px 13px; background: transparent; color: var(--milai-ink); font: inherit; font-size: 12px; cursor: pointer; }
+.milai-proposal-actions .milai-proposal-primary { background: var(--milai-accent); border-color: var(--milai-accent); color: #083443; font-weight: 700; }
 .milai-welcome { margin-block: auto; padding-block: 24px; }
 .milai-welcome .milai-bubble { background: transparent; border: 0; box-shadow: none; padding-top: 0; }
 .milai-welcome-spark { display: block; margin-bottom: 12px; font-size: 32px; color: var(--milai-accent); }
@@ -105,8 +111,9 @@
   .chat-view .milai-chat-composer { padding-left: 14px; gap: 8px; min-height: 56px; border-radius: 17px; }
   .chat-view .milai-chat-composer input { font-size: 16px; }
   .milai-chat-error, .milai-chat-notice { margin-left: 36px; }
+  .milai-action-proposal { margin-left: 36px; max-width: calc(100% - 36px); padding: 15px; }
 }
 @media (prefers-reduced-motion:reduce) {
-  .milai-message, .milai-typing-dots i { animation: none; }
+  .milai-message, .milai-typing-dots i, .milai-action-proposal { animation: none; }
   .milai-map-link, .milai-message .reply-places button { transition: none; }
 }

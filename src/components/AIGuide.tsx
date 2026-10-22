@@ -21,13 +21,13 @@ function MapIcon() {
   return <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z" /><path d="M9 3v16M15 5v16" /></svg>;
 }
 
-const suggestions = ['What should I know before visiting Iraq?', 'Tell me about Iraqi culture', 'Recommend historic places'];
+const suggestions = ['What should I know before visiting Iraq?', 'Tell me about Iraqi culture', 'Plan 4 hours in Baghdad'];
 
 export default function AIGuide() {
   const [prompt, setPrompt] = useState('');
   const [focused, setFocused] = useState<string | null>(null);
   const [view, setView] = useState<'choices' | 'chat' | 'map'>('choices');
-  const guide = useMilaiGuide({ onFocus: setFocused, onMap: () => setView('map') });
+  const guide = useMilaiGuide({ onFocus: setFocused, onMap: () => setView('map'), focused });
   const trip = guide.store.draft.trip;
   const [optionsOpen, setOptionsOpen] = useState(false);
   const expanded = view === 'chat';
@@ -106,7 +106,7 @@ export default function AIGuide() {
       </header>
       <div className="ai-page-particles" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       <div className="ai-ghost-tower" aria-hidden="true" />
-      <section className="ai-core" aria-label="Milai local tour guide" onKeyDown={event => {
+      <section className="ai-core" aria-label="Milai AI tour guide" onKeyDown={event => {
         if (event.key !== 'Escape') return;
         if (optionsOpen) { setOptionsOpen(false); switchButton.current?.focus(); }
         else if (view === 'chat') open('choices');

@@ -31,7 +31,7 @@ export default function ExploreIraq(){
   const {draft,setTrip,ready:sessionReady}=useJourneys(),trip=draft.trip;
   const [view,setView]=useState<AtlasView|null>({key:0,points:national}),[notice,setNotice]=useState(''),[locating,setLocating]=useState(false);
   const [picking,setPicking]=useState(false),[roadState,setRoadState]=useState<{key:string;route:RoadRoute|null}>({key:'',route:null});
-  const guide=useMilaiGuide({onFocus:id=>{setSelected(id);const place=places.find(p=>p.id===id);if(place)focus([place.coordinates]);},onMap:()=>setPanel('plan')});
+  const guide=useMilaiGuide({onFocus:id=>{setSelected(id);const place=places.find(p=>p.id===id);if(place)focus([place.coordinates]);},onMap:()=>setPanel('plan'),focused:selected});
   const pointKey=JSON.stringify(tripCoordinates(trip));
   const onRouteChange=useCallback((route:RoadRoute|null)=>setRoadState({key:pointKey,route}),[pointKey]);
   const panelRef=useRef<HTMLElement>(null), lastTrigger=useRef<HTMLElement|null>(null), modeRefs=useRef<(HTMLButtonElement|null)[]>([]), mounted=useRef(true);

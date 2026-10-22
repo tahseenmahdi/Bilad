@@ -2,7 +2,7 @@
 
 A minimal Malwiya experience: BILAD, the tower, atmospheric lighting and sparse embers.
 
-Run `npm install` and `npm run dev` to preview. `npm run build` exports the production website to `out/`.
+Run `npm ci` and `npm run dev` to preview. For production, run `npm run build` and `npm start` on a host that runs Next.js server routes. Deploy only this `bilad-web` folder; `ai/tourism-ai` is no longer required for the website.
 
 ## Scroll prototype
 
@@ -18,15 +18,15 @@ The original tower image is supplied by the user.
 
 The first split opens a larger gap for the supplied AI mascot, feature introduction, and a link to `/ai/`. A short atmospheric wash connects the routes. The guide page adapts `AI chatbot design reference` into a responsive page with the mascot, a question input, and suggested prompts. Its return link opens the first tower reveal at `/#guide`. Reduced-motion visitors can reach the guide directly from the intact tower.
 
-Milai works locally in the browser using Bilad’s curated destination data and deterministic question/itinerary helpers. It needs no AI API, API host, key, account, or extra configuration. It can answer supported place, history, culture, nature, language and travel-service questions, and edit the active draft with commands such as “Plan 4 hours in Baghdad”, “Add Babylon”, “Remove Babylon” and “Show nearby places”. This is a guided local demo, not a generative AI service; saving journeys remains an explicit action in the planner.
+Milai calls Gemini from Bilad's own `/api/guide` Next route. Set `GEMINI_API_KEY` in this site's private server environment; optionally set `GEMINI_MODEL` (default `gemini-2.5-flash`). The browser calls the same origin, so no separate API URL or CORS setup is needed. If the key or Gemini service is unavailable, chat shows an error and a retry control. The old `ai/tourism-ai` prototype is not part of the Bilad runtime.
 
-Chat and both map planners use the same curated Bilad content and shared journey draft. Trip commands update the active draft immediately and can be reverted with Undo. Save journeys through the existing planner controls. See [Milai local guide behavior and supported commands](docs/milai-ai.md).
+Chat and both map planners use the same curated Bilad content and shared journey draft. Milai can open the map, focus a known place, show nearby places, recommend a catalogued service, and propose a day route or stop edit. Confirm a route proposal to build it and save a new Idea; other edits can be undone. Save and Done requests use the existing journey lifecycle. See [Milai AI actions, setup, and boundaries](docs/milai-ai.md).
 
 ## Map and day planner
 
 The guide page has animated AI and map buttons. Opening either reveals a three-dot switcher with the other option and a way back to both buttons. The chat prompt is preserved while switching.
 
-Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` to your own public Mapbox token (`pk.` prefix). Allow your deployed domain and localhost in the token's URL restrictions. Restart development after changing configuration; production static exports must be rebuilt with this variable set.
+Copy `.env.example` to `.env.local` without overwriting an existing private file. Set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` to your own public Mapbox token (`pk.` prefix) and `GEMINI_API_KEY` to your Gemini key. Allow your deployed domain and localhost in Mapbox token URL restrictions. Restart development after changing configuration; rebuild production after changing the public Mapbox token. Do not commit the private key.
 
 The current planner uses an explicitly selected city or map pin. It makes no IP or browser-geolocation request. The previous location adapter and component remain available as unused prototype code, with their existing tests.
 
@@ -36,7 +36,7 @@ The planner uses a light workspace and separate sand, mint, blue, peach and lila
 
 Mapbox GL JS loads on demand. Its Directions API provides the road route, leg times and expandable directions for chosen stops. Mapbox receives the selected route coordinates. If road directions cannot be fetched, the interface clearly labels the dashed connection as an estimated preview. The list and planning controls remain usable if the map fails. Travel and visit times are estimates, site pins are not verified entrances, and local access/opening times need checking. See [destination sources and planning assumptions](docs/destination-data.md).
 
-Run `node --experimental-strip-types --test tests/*.test.mjs` for planning, local Milai commands, journey persistence and route response validation. Run `npm run typecheck` and `npm run build` before shipping. `npm run test:browser` covers the local guide and shared trip draft (install Chromium with `npx playwright install chromium`, or set `BILAD_TEST_BROWSER_CHANNEL=chrome`). The static export needs no AI backend. Saved journeys persist on this device; the editing draft is tab-local.
+Run `node --experimental-strip-types --test tests/*.test.mjs` for planning, API response validation, action mapping and journey persistence. Run `npm run typecheck` and `npm run build` before shipping. `npm run test:browser` covers Milai and the shared trip draft with a mocked Gemini response (install Chromium with `npx playwright install chromium`, or set `BILAD_TEST_BROWSER_CHANNEL=chrome`). Static-only hosting cannot run `/api/guide`; deploy this folder on a Next.js-capable host and set `GEMINI_API_KEY` there. Saved journeys persist on this device; the editing draft is tab-local.
 
 The design brief for further exploration in Stitch is in [docs/stitch-planner-prompt.md](docs/stitch-planner-prompt.md).
 

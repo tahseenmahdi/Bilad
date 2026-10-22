@@ -2,11 +2,12 @@ import { origins, places } from './destinations.ts';
 import { serviceApps } from './services.ts';
 import { buildDay, estimateTrip, getPlace, MAX_STOPS, nearbyReference, nearestPlaces, type Trip } from './trip-planner.ts';
 
-// Shared by Express and the static client. Model output is data, never instructions.
+// Shared by the Bilad server route and client. Model output is data, never instructions.
 export type GuideAction =
+  | { type: 'open_map' }
   | { type: 'focus_place'; placeId: string }
   | { type: 'nearby'; reference: 'start' | 'destination'; placeId?: string }
-  | { type: 'build_day'; originId?: string; minutes?: number; category?: Trip['category']; roundTrip?: boolean }
+  | { type: 'build_day'; originId?: string; minutes?: number; category?: Trip['category']; roundTrip?: boolean; maxStops?: number; stopIds?: string[] }
   | { type: 'add_stop' | 'remove_stop'; placeId: string }
   | { type: 'reorder_stops'; stopIds: string[] }
   | { type: 'save_trip' }
@@ -20,7 +21,7 @@ export type GuideContext = {
 };
 export type GuideRequest = { message: string; history: { role: 'user' | 'assistant'; text: string }[]; context: GuideContext };
 export const GUIDE_LIMITS = { message: 1000, history: 6, reply: 4000, actions: 4 } as const;
-export const isTripAction = (a: GuideAction) => ['build_day', 'add_stop', 'remove_stop', 'reorder_stops'].includes(a.type);
+export const isTripAction = (a: GuideAction): a is Extract<GuideAction, { type: 'build_day' | 'add_stop' | 'remove_stop' | 'reorder_stops' }> => ['build_day', 'add_stop', 'remove_stop', 'reorder_stops'].includes(a.type);
 export const isWriteAction = (a: GuideAction) => isTripAction(a) || a.type === 'save_trip' || a.type === 'complete_journey';
 function fail(message: string): never { throw new Error(message); }
 const object = (v: unknown): Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v) ? v as Record<string, unknown> : fail('Expected an object.');
@@ -97,6 +98,7 @@ export function validateGuideResponse(value: unknown, request: GuideRequest): Gu
   const actions = v.actions.map(value => {
     const a = object(value);
     switch (a.type) {
+      case 'open_map': keys(a, ['type']); break;
       case 'focus_place': case 'add_stop': case 'remove_stop':
         keys(a, ['type', 'placeId']); knownPlace(a.placeId); break;
       case 'nearby':
@@ -106,11 +108,13 @@ export function validateGuideResponse(value: unknown, request: GuideRequest): Gu
         guideNearby(request.context.trip, request.context.focusedPlaceId ?? null, a as Extract<GuideAction, { type: 'nearby' }>);
         break;
       case 'build_day':
-        keys(a, ['type', 'originId', 'minutes', 'category', 'roundTrip']);
+        keys(a, ['type', 'originId', 'minutes', 'category', 'roundTrip', 'maxStops', 'stopIds']);
         if (a.originId !== undefined && !origins.some(o => o.id === a.originId)) fail('Unknown origin ID.');
         if (a.minutes !== undefined) minutes(a.minutes);
         if (a.category !== undefined) category(a.category);
         if (a.roundTrip !== undefined) boolean(a.roundTrip);
+        if (a.maxStops !== undefined && (!Number.isInteger(a.maxStops) || Number(a.maxStops) < 1 || Number(a.maxStops) > MAX_STOPS)) fail(`Stop limit must be 1–${MAX_STOPS}.`);
+        if (a.stopIds !== undefined) ids(a.stopIds, MAX_STOPS, knownPlace);
         validateSettingsIntent(a as Extract<GuideAction, { type: 'build_day' }>, request);
         break;
       case 'reorder_stops': keys(a, ['type', 'stopIds']); ids(a.stopIds, MAX_STOPS, knownPlace); break;
@@ -138,6 +142,8 @@ export function validateGuideResponse(value: unknown, request: GuideRequest): Gu
 function validateSettingsIntent(action: Extract<GuideAction, { type: 'build_day' }>, request: GuideRequest) {
   const current = request.context.trip, message = request.message.toLowerCase();
   if (!current) return;
+  const requestedOrigin = origins.find(city => new RegExp(`\\b(?:from|in|starting (?:at|in))\\s+${city.name.toLowerCase()}\\b`).test(message));
+  if (requestedOrigin && requestedOrigin.id !== current.origin?.id && action.originId !== requestedOrigin.id) fail('The proposal does not use your requested starting city.');
   if (action.originId !== undefined && action.originId !== current.origin?.id) {
     const city = origins.find(o => o.id === action.originId);
     if (!city || !message.includes(city.name.toLowerCase())) fail('Changing the starting city requires naming it in your request.');
@@ -153,7 +159,30 @@ function validateSettingsIntent(action: Extract<GuideAction, { type: 'build_day'
     const words = { all: /\b(all|mix|everything|balanced)\b/, history: /\b(history|historical|historic|ancient|heritage)\b/, nature: /\b(nature|waterfalls?|mountains?|lakes?)\b/, culture: /\b(culture|cultural|books|cafes?)\b/ };
     if (!words[action.category].test(message)) fail('Changing category requires an explicit category request.');
   }
+  for (const [wanted, pattern] of [['nature', /\b(nature|waterfalls?|mountains?|lakes?)\b/], ['history', /\b(history|historical|historic|ancient|heritage)\b/], ['culture', /\b(culture|cultural|books|cafes?)\b/]] as const) {
+    if (pattern.test(message) && current.category !== wanted && action.category !== wanted) fail('The proposal does not use your requested category.');
+  }
   if (action.roundTrip !== undefined && action.roundTrip !== current.roundTrip && !(action.roundTrip ? /round trip|return to (the )?start/ : /one way|no return|without return/).test(message)) fail('Changing return travel requires an explicit request.');
+  if (/round trip|return to (the )?start/.test(message) && !current.roundTrip && action.roundTrip !== true) fail('The proposal must include your requested return travel.');
+  if (/one way|no return|without return/.test(message) && current.roundTrip && action.roundTrip !== false) fail('The proposal must match your one-way request.');
+  const requestedCount = message.match(/\b(\d+)\s*(?:stops?|places?|sites?)\b/);
+  if (requestedCount && action.maxStops !== Number(requestedCount[1])) fail('The proposal must match your requested stop limit.');
+  if (action.maxStops !== undefined) {
+    if (!requestedCount) fail('Name the stop limit in your request.');
+  }
+  const normalizedMessage = ` ${message.replace(/[^\p{L}\p{N}]+/gu, ' ').trim()} `;
+  const namesPlace = (place: typeof places[number]) => [place.name, place.arabic, ...place.aliases].some(name => normalizedMessage.includes(` ${name.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim()} `));
+  if (/\b(?:with|including|visit|via|to)\b/.test(message)) {
+    const named = places.filter(place => place.name.toLowerCase() !== requestedOrigin?.name.toLowerCase() && namesPlace(place));
+    if (named.some(place => !action.stopIds?.includes(place.id))) fail('The proposal must include every place named in your route request.');
+  }
+  if (action.stopIds !== undefined) {
+    for (const id of action.stopIds) {
+      const place = getPlace(id)!;
+      if (!namesPlace(place)) fail('Named route stops must come from your request.');
+    }
+    if (action.maxStops !== undefined && action.stopIds.length > action.maxStops) fail('The named stops exceed your requested stop limit.');
+  }
 }
 
 export function applyGuideTripAction(current: Trip, action: GuideAction): Trip {
@@ -163,7 +192,7 @@ export function applyGuideTripAction(current: Trip, action: GuideAction): Trip {
     case 'build_day':
       next = { ...next, ...(action.originId !== undefined ? { origin: origins.find(o => o.id === action.originId) ?? fail('Unknown origin ID.') } : {}), ...(action.minutes !== undefined ? { minutes: minutes(action.minutes) } : {}), ...(action.category !== undefined ? { category: category(action.category) } : {}), ...(action.roundTrip !== undefined ? { roundTrip: boolean(action.roundTrip) } : {}) };
       if (!next.origin) fail('Choose a starting city or map pin before building a day.');
-      next.stopIds = buildDay(next);
+      next.stopIds = action.stopIds !== undefined ? ids(action.stopIds, MAX_STOPS, knownPlace) : buildDay(next).slice(0, action.maxStops ?? MAX_STOPS);
       if (!next.stopIds.length) fail('No stops fit this time and category. Try a longer day or another starting point.');
       break;
     case 'add_stop':

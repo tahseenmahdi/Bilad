@@ -1,6 +1,6 @@
 # Shared day trips and Your journeys
 
-`/journeys/` is a statically exported page. Tower reveal 5 opens it; its Bilad link restores `/#journeys`. Existing tower geometry, spring, gap sizes and resize handling are reused. The static reduced-motion links include Your journeys.
+`/journeys/` is a prerendered page in the Bilad Next application. Tower reveal 5 opens it; its Bilad link restores `/#journeys`. Existing tower geometry, spring, gap sizes and resize handling are reused. The reduced-motion links include Your journeys.
 
 ## Architecture
 

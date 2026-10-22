@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type CSSProperties } from 'react';
-import { floorClipPaths as floors, towerOutline, clipCoordinateScale, staircaseSeamPaths, seamFocusY } from './tower-clips';
+import { floorClipPaths as floors, towerOutline, clipCoordinateScale, staircaseSeamPaths } from './tower-clips';
 import { AtmosphereLink } from './AtmosphereTransition';
 import ServiceLogos from './ServiceLogos';
 import './services.css';
@@ -10,6 +10,7 @@ import { createFloorGesture } from '@/lib/floor-gesture';
 import './tower-motion.css';
 import './explore-intro.css';
 import './journeys-intro.css';
+import './devices-intro.css';
 
 // Fixed values keep the server and browser render identical.
 const embers = [
@@ -22,27 +23,18 @@ const embers = [
   [29, -6, 1.2, 20, -15, 32], [76, 10, 1.5, 17, -7, -18],
 ] as const;
 
-const floorStories = [
-  { title: 'Every layer tells a story.', text: 'Discover the places that shaped a culture.' },
-  { title: 'Follow a different path.', text: 'Let curiosity lead you through Bilad.' },
-  { title: 'Step into living heritage.', text: 'Find beauty in the details left behind.' },
-  { title: 'Meet the heart of a place.', text: 'Its people. Its craft. Its everyday rituals.' },
-  { title: 'Make room for discovery.', text: 'There is always another story around the corner.' },
-  { title: 'Your journey starts here.', text: 'Explore Iraq, one story at a time.' },
-] as const;
-
 export default function Bilad() {
   const towerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLElement>(null);
   const floorRefs = useRef<(HTMLDivElement | null)[]>([]);
   const focusRef = useRef<HTMLDivElement>(null);
   const fadeRefs = useRef<(SVGGElement | null)[]>([]);
-  const storyRefs = useRef<(HTMLDivElement | null)[]>([]);
   const featureRef = useRef<HTMLDivElement>(null);
   const sayRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const exploreRef = useRef<HTMLDivElement>(null);
   const journeysRef = useRef<HTMLDivElement>(null);
+  const devicesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -94,7 +86,7 @@ export default function Bilad() {
       fadeRefs.current.forEach((fade, index) => {
         if (fade) fade.style.opacity = String(motion.feathers[Math.floor(index / 2)]);
       });
-      [featureRef.current, sayRef.current, servicesRef.current, exploreRef.current, journeysRef.current].forEach((feature, index) => {
+      [featureRef.current, sayRef.current, servicesRef.current, exploreRef.current, journeysRef.current, devicesRef.current].forEach((feature, index) => {
         if (!feature) return;
         const snippet = snippetMotion(displayed, index + 1);
         feature.style.setProperty('--snippet-opacity', String(snippet.opacity));
@@ -102,17 +94,6 @@ export default function Bilad() {
         const active = stage === index + 1 && snippet.opacity > .6;
         feature.inert = !active;
         feature.setAttribute('aria-hidden', String(!active));
-      });
-      storyRefs.current.forEach((story, index) => {
-        if (!story) return;
-        const snippet = snippetMotion(displayed, index + 1);
-        const active = stage === index + 1 && snippet.opacity > .05;
-        story.style.transform = `translate3d(0,${motion.stories[index]}px,0)`;
-        story.style.setProperty('--snippet-opacity', String(snippet.opacity));
-        story.style.setProperty('--snippet-shift', `${snippet.shift}px`);
-        story.style.setProperty('--snippet-blur', `${snippet.blur}px`);
-        story.dataset.active = String(active);
-        story.setAttribute('aria-hidden', String(!active));
       });
       if (focusRef.current) focusRef.current.style.transform = `translate3d(0,${motion.cameraY}px,0) scale(${motion.zoom})`;
     }
@@ -409,6 +390,18 @@ export default function Bilad() {
             <AtmosphereLink href="/journeys/" className="guide-cta"><span>Open your journeys</span><span className="guide-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h11" /><path d="m13 8 4 4-4 4" /></svg></span></AtmosphereLink>
           </div>
         </div>
+        <div ref={devicesRef} className="devices-feature floor-snippet" aria-label="Bilad on your devices" inert>
+          <div className="devices-content">
+            <div className="devices-copy">
+              <h2>Bilad, <em>on every screen.</em></h2>
+            </div>
+            <div className="devices-art" aria-hidden="true">
+              <img className="device-laptop" src="/assets/phones/laptop_minimal.png" alt="" width="1920" height="1920" draggable="false" />
+              <img className="device-iphone" src="/assets/phones/iphone_minimal.png" alt="" width="1920" height="1920" draggable="false" />
+              <img className="device-android" src="/assets/phones/phone_minimal.png" alt="" width="1920" height="1920" draggable="false" />
+            </div>
+          </div>
+        </div>
         <div className="reduced-feature-links">
           <AtmosphereLink href="/ai/">Meet Milai →</AtmosphereLink>
           <AtmosphereLink href="/say-it/">Say it in Iraq →</AtmosphereLink>
@@ -427,15 +420,6 @@ export default function Bilad() {
                   <div key={index} ref={element => { floorRefs.current[index] = element; }} className="tower-floor" aria-hidden="true" style={{ clipPath: `url(#tower-floor-${index})`, zIndex: floors.length - index }}>
                     <div className="floor-surface" style={{ maskImage: `url(#floor-fade-${index})` }}>
                       <img className={`floor-image${index === floors.length - 1 ? ' floor-image-base' : ''}`} src="/assets/malwiya.png" alt="" fetchPriority={index === 0 ? 'high' : 'auto'} draggable="false" />
-                    </div>
-                  </div>
-                ))}
-                {floorStories.map((story, index) => (
-                  <div key={story.title} ref={element => { storyRefs.current[index] = element; }} className="floor-story" aria-hidden="true" data-active="false" style={{ top: `${seamFocusY[index] / 1536 * 100}%` }}>
-                    <div className={`floor-story-copy${index < 5 ? ' replaced-by-ai' : ''}`}>
-                      <span className="floor-story-number">{String(index + 1).padStart(2, '0')} / BILAD</span>
-                      <h2>{story.title}</h2>
-                      <p>{story.text}</p>
                     </div>
                   </div>
                 ))}

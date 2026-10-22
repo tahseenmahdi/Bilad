@@ -1,0 +1,51 @@
+.devices-feature {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 60px 24px 5svh;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll-journey[data-stage="6"] .devices-feature { visibility: visible; transition: none; }
+
+.devices-content {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: min(420px, 100%);
+  color: #e8f5fa;
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: center;
+}
+
+.devices-copy { margin-top: 12px; }
+.devices-copy h2 { margin: 0; font-size: clamp(24px, 3.8svh, 32px); font-weight: 300; letter-spacing: -.055em; line-height: 1.18; }
+.devices-copy h2 em { color: #9edee9; font-style: normal; }
+
+.devices-art { position: relative; width: min(290px, 66vw, 36svh); aspect-ratio: 4 / 3; }
+.devices-art img { display: block; position: absolute; height: auto; user-select: none; filter: drop-shadow(0 8px 12px rgba(1, 14, 23, .2)); }
+.device-laptop { z-index: 1; top: 50%; left: 50%; width: 64%; transform: translate(-50%, -50%) rotate(-2deg); --device-x: 0px; --device-y: 18px; }
+.device-iphone { z-index: 2; top: 0; left: -24%; width: 55%; transform: rotate(-9deg); --device-x: 18px; --device-y: 12px; }
+.device-android { z-index: 3; top: 5%; right: -24%; width: 55%; transform: rotate(9deg); --device-x: -18px; --device-y: 12px; }
+
+.scroll-journey[data-stage="6"] .devices-art img { animation: device-appear .65s cubic-bezier(.22, 1, .36, 1) both; }
+.scroll-journey[data-stage="6"] .device-iphone { animation-delay: .1s; }
+.scroll-journey[data-stage="6"] .device-android { animation-delay: .2s; }
+.scroll-journey[data-stage="6"] .devices-copy { animation: devices-copy-in .45s ease-out .28s both; }
+@keyframes device-appear { from { opacity: 0; translate: var(--device-x) var(--device-y); scale: .94; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes devices-copy-in { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+
+@media (max-height: 500px) {
+  .devices-feature { padding-top: 45px; }
+  .devices-art { width: min(200px, 38svh); }
+  .devices-copy { margin-top: 5px; }
+  .devices-copy h2 { font-size: 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .devices-feature, .devices-copy, .devices-art img { animation: none !important; transition: none !important; }
+}

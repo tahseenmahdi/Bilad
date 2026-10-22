@@ -29,12 +29,6 @@ body { background: #07151e; }
 .tower-floor { position: absolute; inset: 0; will-change: transform; transition: transform 1000ms cubic-bezier(.22,1,.36,1); }
 .floor-surface { width: 100%; height: 100%; }
 .floor-feather { transition: opacity 1100ms cubic-bezier(.22,1,.36,1); }
-.floor-story { position: absolute; left: 50%; width: min(460px, 76vw); margin-left: max(-230px, -38vw); z-index: 10; pointer-events: none; transition: transform 1000ms cubic-bezier(.22,1,.36,1); }
-.floor-story-copy { text-align: center; font-family: 'Space Grotesk', sans-serif; color: #e3f2fa; opacity: 0; visibility: hidden; transform: translateY(calc(-50% + 10px)); filter: blur(5px); transition: opacity 180ms ease, transform 250ms ease, filter 180ms ease, visibility 0s 250ms; }
-.floor-story[data-active="true"] .floor-story-copy { opacity: 1; visibility: visible; transform: translateY(-50%); filter: blur(0); transition: opacity 550ms ease 400ms, transform 650ms cubic-bezier(.22,1,.36,1) 350ms, filter 550ms ease 400ms, visibility 0s; }
-.floor-story-number { display: block; margin-bottom: 7px; font-size: 8px; letter-spacing: .3em; color: #a6dae9; }
-.floor-story h2 { margin: 0; font-size: clamp(16px, 2.2vw, 23px); font-weight: 400; line-height: 1.15; letter-spacing: -.035em; text-shadow: 0 0 22px #0db8d344; }
-.floor-story p { margin: 7px auto 0; max-width: 95%; font-size: clamp(9px, 1vw, 11px); line-height: 1.4; color: #b7d4e2; }
 .wordmark-focus { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 .wordmark { transition: top 1100ms cubic-bezier(.22,1,.36,1), left 1100ms cubic-bezier(.22,1,.36,1), transform 1100ms cubic-bezier(.22,1,.36,1), font-size 1100ms cubic-bezier(.22,1,.36,1), gap 1100ms cubic-bezier(.22,1,.36,1); }
 .scroll-journey[data-stage]:not([data-stage="0"]) .wordmark {
@@ -111,8 +105,6 @@ body { background: #07151e; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .floor-story { display: none; transition: none; }
-  .floor-story-copy { transition: none; }
   .wordmark { transition: none; }
   .tower-focus, .tower-floor { transform: none !important; transition: none; }
   .floor-feather { opacity: 0 !important; transition: none; }
@@ -126,7 +118,6 @@ body { background: #07151e; }
 /* The first opening is a doorway into the guide, outside the tower's image filter. */
 .scroll-journey { position: relative; }
 .guide-anchor { position: absolute; top: 100svh; }
-.replaced-by-ai { display: none; }
 .ai-feature { position: absolute; z-index: 5; inset: 0; display: grid; place-items: center; pointer-events: none; visibility: hidden; opacity: 0; transition: opacity .25s ease, visibility 0s .25s; }
 .ai-feature-content { position: relative; width: min(560px, calc(100% - 40px)); text-align: center; color: #ecfaff; font-family: 'Space Grotesk', sans-serif; transform: translateY(18px); transition: transform .8s cubic-bezier(.22,1,.36,1); }
 .ai-feature-content::before { content: ''; position: absolute; z-index: -1; inset: -55px -90px; background: radial-gradient(ellipse at 50% 58%,#4bd7f31a 0%,#0db8d308 42%,transparent 72%); pointer-events: none; }
